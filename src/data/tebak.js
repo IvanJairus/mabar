@@ -1,72 +1,136 @@
 export const TEBAK = {
-  "Hewan":[
-    "Kucing","Gajah","Kanguru","Ayam","Monyet","Ular","Pinguin","Kepiting","Kuda","Burung hantu",
-    "Lumba-lumba","Katak","Sapi","Jerapah","Buaya","Nyamuk","Kambing","Bebek","Singa","Kelinci",
-    "Anjing","Harimau","Zebra","Panda","Koala","Kancil","Badak","Unta","Semut","Lebah",
-    "Kupu-kupu","Laba-laba","Kalajengking","Cicak","Iguana","Penyu","Hiu","Paus","Gurita","Bintang laut",
-    "Udang","Belut","Merak","Elang","Gagak","Burung merpati","Tikus","Landak","Tupai","Kelelawar"
+  "Hewan": [
+    "Kucing", "Gajah", "Kanguru", "Ayam",
+    "Monyet", "Ular", "Pinguin", "Kepiting",
+    "Kuda", "Burung hantu", "Lumba-lumba", "Katak",
+    "Sapi", "Jerapah", "Buaya", "Nyamuk",
+    "Kambing", "Bebek", "Singa", "Kelinci",
+    "Anjing", "Harimau", "Zebra", "Panda",
+    "Koala", "Kancil", "Badak", "Unta",
+    "Semut", "Lebah", "Kupu-kupu", "Laba-laba",
+    "Kalajengking", "Cicak", "Iguana", "Penyu",
+    "Hiu", "Paus", "Gurita", "Bintang laut",
+    "Udang", "Belut", "Merak", "Elang",
+    "Gagak", "Burung merpati", "Tikus", "Landak",
+    "Tupai", "Kelelawar"
   ],
-  "Profesi":[
-    "Dokter gigi","Tukang parkir","Pilot","Satpam","Barista","Ojol","Guru TK","Tukang cukur","Pemadam kebakaran","Youtuber",
-    "Pesulap","Chef","Badut","Penjaga pantai","Dukun","Wasit","Tukang pijat","Fotografer","Penyiar radio","Astronot",
-    "Perawat","Bidan","Apoteker","Dokter hewan","Polisi","Tentara","Nelayan","Petani","Sopir bus","Masinis",
-    "Pramugari","Kondektur","Montir","Tukang bangunan","Tukang las","Desainer mode","Arsitek","Akuntan","Pengacara","Hakim",
-    "Guru olahraga","Pustakawan","Wartawan","Penyanyi","Aktor","Pelawak","Penari","Atlet","Pelatih bola","Penjual bakso"
+  "Profesi": [
+    "Dokter gigi", "Tukang parkir", "Pilot", "Satpam",
+    "Barista", "Ojol", "Guru TK", "Tukang cukur",
+    "Pemadam kebakaran", "Youtuber", "Pesulap", "Chef",
+    "Badut", "Penjaga pantai", "Dukun", "Wasit",
+    "Tukang pijat", "Fotografer", "Penyiar radio", "Astronot",
+    "Perawat", "Bidan", "Apoteker", "Dokter hewan",
+    "Polisi", "Tentara", "Nelayan", "Petani",
+    "Sopir bus", "Masinis", "Pramugari", "Kondektur",
+    "Montir", "Tukang bangunan", "Tukang las", "Desainer mode",
+    "Arsitek", "Akuntan", "Pengacara", "Hakim",
+    "Guru olahraga", "Pustakawan", "Wartawan", "Penyanyi",
+    "Aktor", "Pelawak", "Penari", "Atlet",
+    "Pelatih bola", "Penjual bakso"
   ],
-  "Kegiatan":[
-    "Mandi","Nyetir mobil","Main gitar","Sikat gigi","Mancing","Masak mi","Selfie","Joget dangdut","Main bulutangkis","Nyuci baju",
-    "Ngepel","Naik motor","Berenang","Main game","Nyapu","Dandan","Kondangan","Mudik","Ronda","Lari pagi",
-    "Cuci piring","Menyetrika","Memasak nasi","Memotong sayur","Menyiram tanaman","Memberi makan kucing","Menjemur baju","Melipat baju","Membuang sampah","Mengecat pagar",
-    "Mencuci motor","Mengganti ban","Naik sepeda","Naik bus","Naik pesawat","Antre tiket","Belanja di pasar","Mencari parkir","Menunggu hujan","Menonton bola",
-    "Bermain catur","Bermain kartu","Karaoke","Menari poco-poco","Senam pagi","Yoga","Lompat tali","Tarik tambang","Main layangan","Membaca buku"
+  "Kegiatan": [
+    "Mandi", "Nyetir mobil", "Main gitar", "Sikat gigi",
+    "Mancing", "Masak mi", "Selfie", "Joget dangdut",
+    "Main bulutangkis", "Nyuci baju", "Ngepel", "Naik motor",
+    "Berenang", "Main game", "Nyapu", "Dandan",
+    "Kondangan", "Mudik", "Ronda", "Lari pagi",
+    "Cuci piring", "Menyetrika", "Memasak nasi", "Memotong sayur",
+    "Menyiram tanaman", "Memberi makan kucing", "Menjemur baju", "Melipat baju",
+    "Membuang sampah", "Mengecat pagar", "Mencuci motor", "Mengganti ban",
+    "Naik sepeda", "Naik bus", "Naik pesawat", "Antre tiket",
+    "Belanja di pasar", "Mencari parkir", "Menunggu hujan", "Menonton bola",
+    "Bermain catur", "Bermain kartu", "Karaoke", "Menari poco-poco",
+    "Senam pagi", "Yoga", "Lompat tali", "Tarik tambang",
+    "Main layangan", "Membaca buku"
   ],
-  "Benda":[
-    "Payung","Kipas angin","Sapu","Kulkas","Gunting","Kompor","Sandal jepit","Helm","Remote TV","Jam weker",
-    "Ember","Panci","Kacamata","Cermin","Setrika","Gembok","Bantal","Galon","Rice cooker","Obeng",
-    "Sendok","Garpu","Pisau","Piring","Gelas","Mangkuk","Sikat sepatu","Pasta gigi","Sabun","Shampo",
-    "Handuk","Sisir","Dompet","Kunci","Tas","Sepatu","Kaos kaki","Topi","Jaket","Celana",
-    "Buku","Pensil","Pulpen","Penghapus","Penggaris","Papan tulis","Laptop","Charger","Lampu","Kursi"
+  "Benda": [
+    "Payung", "Kipas angin", "Sapu", "Kulkas",
+    "Gunting", "Kompor", "Sandal jepit", "Helm",
+    "Remote TV", "Jam weker", "Ember", "Panci",
+    "Kacamata", "Cermin", "Setrika", "Gembok",
+    "Bantal", "Galon", "Rice cooker", "Obeng",
+    "Sendok", "Garpu", "Pisau", "Piring",
+    "Gelas", "Mangkuk", "Sikat sepatu", "Pasta gigi",
+    "Sabun", "Shampo", "Handuk", "Sisir",
+    "Dompet", "Kunci", "Tas", "Sepatu",
+    "Kaos kaki", "Topi", "Jaket", "Celana",
+    "Buku", "Pensil", "Pulpen", "Penghapus",
+    "Penggaris", "Papan tulis", "Laptop", "Charger",
+    "Lampu", "Kursi"
   ],
-  "Makanan":[
-    "Bakso","Sate","Kerupuk","Es krim","Martabak","Gorengan","Mi instan","Rendang","Nasi goreng","Pisang",
-    "Durian","Pecel lele","Cilok","Seblak","Kopi","Bubur ayam","Telur ceplok","Sambal","Tahu bulat","Kelapa muda",
-    "Nasi uduk","Nasi padang","Soto ayam","Rawon","Gudeg","Ketoprak","Gado-gado","Karedok","Batagor","Siomay",
-    "Pempek","Otak-otak","Nasi campur","Ayam geprek","Ayam penyet","Ikan bakar","Sate padang","Tongseng","Gulai","Semur",
-    "Perkedel","Tempe goreng","Tahu goreng","Oncom","Roti bakar","Kue lapis","Klepon","Onde-onde","Serabi","Es campur"
+  "Makanan": [
+    "Bakso", "Sate", "Kerupuk", "Es krim",
+    "Martabak", "Gorengan", "Mi instan", "Nasi goreng",
+    "Pisang", "Durian", "Pecel lele", "Cilok",
+    "Seblak", "Kopi", "Bubur ayam", "Telur ceplok",
+    "Sambal", "Tahu bulat", "Kelapa muda", "Ayam geprek",
+    "Ayam penyet", "Ikan bakar", "Sate padang", "Roti bakar",
+    "Klepon", "Es campur"
   ],
-  "Tempat umum":[
-    "Pasar","Terminal","Stasiun","Bandara","Pelabuhan","Rumah sakit","Puskesmas","Apotek","Sekolah","Kampus",
-    "Perpustakaan","Kantor pos","Bank","ATM","Mal","Supermarket","Warung kopi","Restoran","Bioskop","Taman kota",
-    "Kebun binatang","Pantai","Gunung","Air terjun","Museum","Masjid","Gereja","Pura","Kelenteng","Lapangan bola",
-    "Kolam renang","Gedung olahraga","Salon","Bengkel","SPBU","Tempat cuci mobil","Pasar malam","Taman bermain","Hotel","Asrama",
-    "Kantor polisi","Kantor pemadam","Balai desa","Pos ronda","Halte bus","Toko buku","Toko buah","Toko emas","Pasar ikan","Taman nasional"
+  "Tempat umum": [
+    "Pasar", "Terminal", "Stasiun", "Bandara",
+    "Pelabuhan", "Rumah sakit", "Puskesmas", "Apotek",
+    "Sekolah", "Kampus", "Perpustakaan", "Kantor pos",
+    "Bank", "ATM", "Mal", "Supermarket",
+    "Warung kopi", "Restoran", "Bioskop", "Taman kota",
+    "Kebun binatang", "Pantai", "Gunung", "Air terjun",
+    "Museum", "Masjid", "Gereja", "Pura",
+    "Kelenteng", "Lapangan bola", "Kolam renang", "Gedung olahraga",
+    "Salon", "Bengkel", "SPBU", "Tempat cuci mobil",
+    "Pasar malam", "Taman bermain", "Hotel", "Asrama",
+    "Kantor polisi", "Kantor pemadam", "Balai desa", "Pos ronda",
+    "Halte bus", "Toko buku", "Toko buah", "Toko emas",
+    "Pasar ikan", "Taman nasional"
   ],
-  "Transportasi":[
-    "Sepeda","Motor","Mobil","Bus","Angkot","Bajaj","Becak","Delman","Kereta api","MRT",
-    "LRT","TransJakarta","Taksi","Taksi online","Ojek online","Kapal feri","Kapal pesiar","Perahu","Sampan","Pesawat",
-    "Helikopter","Balon udara","Roket","Truk","Pikap","Ambulans","Mobil pemadam","Mobil polisi","Derek","Traktor",
-    "Buldoser","Sepeda listrik","Skuter","Skateboard","Sepatu roda","Mikrolet","Kereta barang","Kapal kargo","Kapal nelayan","Getek",
-    "Rakit","Paralayang","Jet ski","ATV","Monorel","Trem","Bus sekolah","Mobil antar jemput","Kereta cepat","Kapal selam"
+  "Transportasi": [
+    "Sepeda", "Motor", "Mobil", "Bus",
+    "Angkot", "Bajaj", "Becak", "Delman",
+    "Kereta api", "Taksi", "Taksi online", "Ojek online",
+    "Kapal pesiar", "Perahu", "Sampan", "Pesawat",
+    "Helikopter", "Balon udara", "Roket", "Truk",
+    "Pikap", "Ambulans", "Mobil pemadam", "Mobil polisi",
+    "Derek", "Traktor", "Buldoser", "Sepeda listrik",
+    "Skuter", "Skateboard", "Sepatu roda", "Paralayang",
+    "Jet ski", "ATV", "Kereta cepat", "Kapal selam"
   ],
-  "Pakaian dan aksesori":[
-    "Kemeja","Kaos","Polo","Sweater","Hoodie","Jas","Blazer","Rompi","Celana panjang","Celana pendek",
-    "Jeans","Rok","Gaun","Kebaya","Batik","Sarung","Daster","Piyama","Legging","Sandal gunung",
-    "Boot","Sneakers","Peci","Hijab","Topi jerami","Ikat pinggang","Dasi","Kacamata hitam","Jam tangan","Gelang",
-    "Kalung","Cincin","Anting","Bros","Ransel","Koper","Syal","Sarung tangan","Bandana","Bando",
-    "Jepit rambut","Masker","Cardigan","Overall","Kimono","Hanbok","Sari","Baju kurung","Celana kargo","Mantel"
+  "Pakaian dan aksesori": [
+    "Kemeja", "Kaos", "Polo", "Sweater",
+    "Hoodie", "Jas", "Blazer", "Rompi",
+    "Celana panjang", "Celana pendek", "Jeans", "Rok",
+    "Gaun", "Kebaya", "Batik", "Sarung",
+    "Daster", "Piyama", "Legging", "Sandal gunung",
+    "Boot", "Sneakers", "Peci", "Hijab",
+    "Topi jerami", "Ikat pinggang", "Dasi", "Kacamata hitam",
+    "Jam tangan", "Gelang", "Kalung", "Cincin",
+    "Anting", "Bros", "Ransel", "Koper",
+    "Syal", "Sarung tangan", "Bandana", "Bando",
+    "Jepit rambut", "Masker", "Cardigan", "Overall",
+    "Kimono", "Hanbok", "Sari", "Baju kurung",
+    "Celana kargo", "Mantel"
   ],
-  "Alat musik":[
-    "Gitar","Gitar listrik","Bass","Drum","Kendang","Pianika","Piano","Keyboard","Biola","Cello",
-    "Kontrabas","Saksofon","Terompet","Trombon","Klarinet","Piccolo","Suling","Harmonika","Angklung","Kolintang",
-    "Gamelan","Saron","Bonang","Gong","Rebab","Kecapi","Sasando","Calung","Marakas","Tamborin",
-    "Kastanyet","Triangle","Xylophone","Vibrafon","Harpa","Banjo","Ukulele","Mandolin","Akordeon","Melodika",
-    "Ocarina","Tuba","Bongo","Conga","Djembe","Cajon","Timpani","Gender","Gambang","Rindik"
+  "Alat musik": [
+    "Gitar", "Gitar listrik", "Bass", "Drum",
+    "Kendang", "Pianika", "Piano", "Keyboard",
+    "Biola", "Cello", "Saksofon", "Terompet",
+    "Suling", "Harmonika", "Angklung", "Gamelan",
+    "Gong", "Kecapi", "Sasando", "Marakas",
+    "Tamborin", "Triangle", "Harpa", "Ukulele",
+    "Akordeon", "Bongo", "Djembe"
   ],
-  "Kartun atau anime":[
-    "Naruto","Doraemon","Nobita","Shizuka","Giant","Suneo","Pikachu","Ash Ketchum","Misty","Spongebob",
-    "Patrick Star","Squidward","Mr. Krabs","Sandy Cheeks","Plankton","Mickey Mouse","Minnie Mouse","Donald Duck","Goofy","Tom",
-    "Jerry","Scooby-Doo","Shaggy","Batman","Superman","Spider-Man","Iron Man","Captain America","Hulk","Thor",
-    "Sailor Moon","Goku","Vegeta","Luffy","Zoro","Chopper","Shinchan","Kazama","Ultraman","Power Ranger",
-    "Ninja Hattori","Kiteretsu","Detektif Conan","Ran Mouri","Kogoro Mouri","Elsa","Anna","Olaf","Buzz Lightyear","Woody"
+  "Kartun atau anime": [
+    "Naruto", "Doraemon", "Nobita", "Shizuka",
+    "Giant", "Suneo", "Pikachu", "Ash Ketchum",
+    "Misty", "Spongebob", "Patrick Star", "Squidward",
+    "Mr. Krabs", "Sandy Cheeks", "Plankton", "Mickey Mouse",
+    "Minnie Mouse", "Donald Duck", "Goofy", "Tom",
+    "Jerry", "Scooby-Doo", "Shaggy", "Batman",
+    "Superman", "Spider-Man", "Iron Man", "Captain America",
+    "Hulk", "Thor", "Sailor Moon", "Goku",
+    "Vegeta", "Luffy", "Zoro", "Chopper",
+    "Shinchan", "Kazama", "Ultraman", "Power Ranger",
+    "Ninja Hattori", "Kiteretsu", "Detektif Conan", "Ran Mouri",
+    "Kogoro Mouri", "Elsa", "Anna", "Olaf",
+    "Buzz Lightyear", "Woody"
   ]
 };
