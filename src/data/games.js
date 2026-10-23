@@ -26,7 +26,7 @@ export const GAMES = [
   {name:'Jawab Cepat', how:'Sebutkan 3 hal sesuai prompt dalam 5 detik. Gagal, kena hukuman.', loud:true, tags:['cepat'], solo:true, run:gameCepat},
   {name:'Kata Terlarang', how:'Jelaskan kata rahasia tanpa menyebut 3 kata terlarang. 30 detik.', loud:true, tags:['tantangan'], solo:true, run:gameTaboo},
   {name:'Cari Penyusup', how:'Satu pemain dapat kata berbeda. Debat, lalu voting siapa penyusupnya.', loud:true, tags:['tantangan'], team:true, min:3, run:gameUndercover},
-  {name:'Cari Benda', how:'Cari benda sesuai warna, huruf, atau dua huruf. Mode warna bisa scan kamera, 3 ronde.', loud:true, tags:['tantangan'], solo:true, run:gameColorHunt},
+  {name:'Cari Benda', how:'Cari benda 5 ronde campur: 2 warna discan semua, 2 kata lewat tap tercepat, 1 gabungan.', loud:true, tags:['tantangan'], solo:true, run:gameColorHunt},
   {name:'Adu Bel', how:'Teka-teki cepat. Mode Team atau Solo, yang cepat menekan bel punya 6 detik untuk menjawab.', loud:true, tags:['cepat'], solo:true, team:true, run:gameBuzzer},
   {name:'Stop the Timer', how:'Stop timer tanpa melihat angka. Target acak sama untuk semua pemain, 3 ronde, ronde akhir desimal.', loud:false, tags:['cepat'], solo:true, run:gameStopTimer},
   {name:'Kode Rahasia', how:'Beri 1 petunjuk untuk 3 kata tim. Hindari bom tengkorak.', loud:false, tags:['tantangan'], team:true, min:4, run:gameCodenames},
