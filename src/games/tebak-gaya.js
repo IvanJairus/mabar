@@ -101,10 +101,10 @@ export function gameTebak(){
       const team=buildTeams()[turnTeam], guesser=team[teamCursor[turnTeam] % team.length];
       setStage(`<p class="kicker">Giliran tim · ${turnTeam+1}/${teamCount}</p><div class="who">Tim ${turnTeam+1}</div>
         <p>Yang nebak: <b>${esc(guesser)}</b><br>Anggota: ${team.map(esc).join(', ')}</p>
-        <p>${duration} detik. Miringkan HP (landscape), tempel di jidat, layar menghadap teman.</p>`);
+        <p>${duration} detik. Pegang HP tegak, tempel di jidat, layar menghadap teman.</p>`);
     } else {
       setStage(`<p class="kicker">Giliran nebak · ${i+1}/${p.length}</p><div class="who">${esc(p[i])}</div>
-        <p>${duration} detik. Miringkan HP (landscape), tempel di jidat, layar menghadap teman.</p>`);
+        <p>${duration} detik. Pegang HP tegak, tempel di jidat, layar menghadap teman.</p>`);
     }
     setActions(`<button class="btn hot xl" id="go">Mulai</button>`);
     $('#go').onclick = play;

@@ -32,8 +32,17 @@ export function gameCodenames(){
     setStage(`<p class="kicker">${esc(spymasters[turn])} · ${label(turn)}</p><h2 class="big">Kunci</h2>
       <div class="cn">${key.map((c,i)=>`<button disabled class="${c}">${esc(words[i])}${c==='x'?'<small>BOM</small>':''}</button>`).join('')}</div>
       <div class="cn-legend"><span>Merah 3</span><span>Biru 3</span><span>Netral 2</span><span>Bom 1</span></div>`);
-    setActions(`<button class="btn ink xl" id="hideKey">Sembunyikan &amp; mulai tebak</button>`);
+    setActions(`<button class="btn" id="rerollWords">Acak kata</button><button class="btn ink xl" id="hideKey">Sembunyikan &amp; mulai tebak</button>`);
+    $('#rerollWords').onclick=rerollWords;
     $('#hideKey').onclick=guessScreen;
+  };
+  const rerollWords=()=>{
+    if(revealed.some(Boolean) && !confirm('Acak ulang akan mereset papan dan skor. Lanjut?')) return;
+    const old=new Set(words);
+    words=shuffle(Object.values(TEBAK).flat().filter(w=>!old.has(w))).slice(0,9);
+    key=shuffle(['r','r','r','b','b','b','n','n','x']);
+    revealed=Array(9).fill(false);
+    showKey();
   };
   const guessScreen=()=>{
     setStage(`<p class="kicker">Giliran ${label(turn)}</p><h2 class="big">Pilih 1 kata</h2>

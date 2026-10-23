@@ -23,7 +23,7 @@ export function gameBuzzer(){
   const setupTeam=()=>{
     teams=twoTeams();
     teamIntro('Adu Bel', teams, ['Tim Merah','Tim Biru'],
-      'HP di tengah meja. Tim yang menekan bel duluan punya 3 detik untuk menjawab. Benar dapat 1 poin, salah poin untuk lawan. Pertama ke 5 poin menang.',
+      'HP di tengah meja. Tim yang menekan bel duluan punya 6 detik untuk menjawab. Benar dapat 1 poin, salah poin untuk lawan. Pertama ke 5 poin menang.',
       startTeamGame, setupTeam);
     const acts=$('#actions');
     if(acts) acts.insertAdjacentHTML('beforeend','<button class="btn" id="modeSwitch">Ganti mode</button>');
@@ -50,23 +50,36 @@ export function gameBuzzer(){
   };
   const teamBuzz=team=>{
     if(locked) return; locked=true; resolved=false; active=team;
-    let left=3;
+    let left=6;
     overlay.innerHTML=`${teamTop()}<div class="buzz-wait">
       <p class="kicker">${teamName(team)} menekan bel</p>
-      <div class="who" id="left">3</div>
-      <p>Jawab lantang bareng tim. Hakim memutuskan.</p>
+      <div class="who" id="left">6</div>
+      <p>Jawab lantang bareng tim. Hakim bisa menekan Benar/Salah kapan saja.</p>
       <div class="buzz-actions"><button class="btn ink" id="benar">Benar</button><button class="btn hot" id="salah">Salah</button></div>
     </div>`;
     bindTeamTop();
     overlay.querySelector('#benar').onclick=()=>teamResolve(true);
     overlay.querySelector('#salah').onclick=()=>teamResolve(false,'Jawaban salah');
     const tick=()=>{
-      if(!overlay || !overlay.isConnected) return;
+      if(!overlay || !overlay.isConnected || resolved) return;
       left--;
       if(left>0){ const el=overlay.querySelector('#left'); if(el) el.textContent=left; beep(900,.05); timer=later(tick,1000); }
-      else teamResolve(false,'Waktu habis');
+      else teamJudge(team);
     };
     timer=later(tick,1000);
+  };
+  const teamJudge=team=>{
+    if(!overlay || !overlay.isConnected || resolved) return;
+    clearTimeout(timer);
+    overlay.innerHTML=`${teamTop()}<div class="buzz-wait">
+      <p class="kicker">${teamName(team)} · waktu habis</p>
+      <h2 class="big">Jawaban benar?</h2>
+      <p>Hakim memutuskan sekarang.</p>
+      <div class="buzz-actions"><button class="btn ink" id="benar">Benar</button><button class="btn hot" id="salah">Salah</button></div>
+    </div>`;
+    bindTeamTop();
+    overlay.querySelector('#benar').onclick=()=>teamResolve(true);
+    overlay.querySelector('#salah').onclick=()=>teamResolve(false,'Jawaban salah');
   };
   const teamResolve=(ok,why='')=>{
     if(!overlay || !overlay.isConnected || resolved) return;
@@ -102,7 +115,7 @@ export function gameBuzzer(){
   };
 
   // Mode solo free-for-all dengan steal
-  let soloOverlay=null, soloTimer=null, soloScores=[], soloFirst=null, soloSteal=null, soloPhase='', soloResolved=false, soloLeft=3, soloQ='';
+  let soloOverlay=null, soloTimer=null, soloScores=[], soloFirst=null, soloSteal=null, soloPhase='', soloResolved=false, soloJudging=false, soloLeft=6, soloQ='';
   const setupSolo=()=>{
     setStage(`<p class="kicker">Mode Solo</p><h2 class="big">Free-for-all</h2>
       <p>Semua pemain berebut menekan zona masing-masing. Yang pertama benar dapat 1 poin. Kalau salah atau waktu habis, pemain tercepat kedua boleh mencuri.</p>
@@ -131,13 +144,18 @@ export function gameBuzzer(){
   const soloZones=()=>p.map((n,i)=>{
     const isFirst=i===soloFirst, isSteal=i===soloSteal;
     const cls='buzzer solo'+(isFirst?' first':'')+(isSteal?' steal':'');
-    const dis=soloPhase==='steal' || (soloPhase==='first' && (i===soloFirst || soloSteal!==null));
+    const dis=soloJudging || soloPhase==='steal' || (soloPhase==='first' && (i===soloFirst || soloSteal!==null));
     return `<button class="${cls}" data-sp="${i}" ${dis?'disabled':''} style="${soloZoneStyle(i)}"><span>${esc(n)}</span><small>${soloScores[i]} poin</small></button>`;
   }).join('');
   const soloGrid=()=>`<div class="buzzers" style="grid-template:repeat(${Math.ceil(p.length/2)},1fr)/repeat(2,1fr)">${soloZones()}</div>`;
+  const soloJudgeButtons=`<div class="buzz-actions"><button class="btn ink" id="benarSolo">Benar</button><button class="btn hot" id="salahSolo">Salah</button></div>`;
+  const bindSoloJudge=kind=>{
+    soloOverlay.querySelector('#benarSolo').onclick=()=>kind==='first'?resolveSoloFirst(true):resolveSoloSteal(true);
+    soloOverlay.querySelector('#salahSolo').onclick=()=>kind==='first'?resolveSoloFirst(false,'Jawaban salah'):resolveSoloSteal(false,'Jawaban salah');
+  };
   const soloQuestion=()=>{
     clearTimeout(soloTimer);
-    soloPhase='question'; soloFirst=null; soloSteal=null; soloResolved=false; soloLeft=3; soloQ=makeQuestion();
+    soloPhase='question'; soloFirst=null; soloSteal=null; soloResolved=false; soloJudging=false; soloLeft=6; soloQ=makeQuestion();
     soloOverlay.classList.remove('answering');
     soloOverlay.innerHTML=`${soloTop(true)}<div class="buzz-q">${esc(soloQ)}</div>
       ${soloGrid()}
@@ -152,13 +170,13 @@ export function gameBuzzer(){
       soloLeft--;
       const el=soloOverlay.querySelector('#left'); if(el) el.textContent=soloLeft;
       if(soloLeft>0){ beep(900,.05); soloTimer=later(tick,1000); }
-      else { if(kind==='first') resolveSoloFirst(false,'Waktu habis'); else resolveSoloSteal(false,'Waktu habis'); }
+      else soloJudge(kind);
     };
     soloTimer=later(tick,1000);
   };
   const soloFirstTap=i=>{
     if(soloPhase!=='question') return;
-    soloFirst=i; soloSteal=null; soloResolved=false; soloLeft=3; soloPhase='first';
+    soloFirst=i; soloSteal=null; soloResolved=false; soloJudging=false; soloLeft=6; soloPhase='first';
     soloFirstView();
     startSoloClock('first');
   };
@@ -170,37 +188,53 @@ export function gameBuzzer(){
       <div class="buzz-answer">
         <p class="kicker">Menjawab · ${esc(p[soloFirst])}</p>
         <div class="who" id="left">${soloLeft}</div>
+        ${soloJudgeButtons}
         <p class="hint">${soloSteal!==null?`Steal siap: ${esc(p[soloSteal])}`:'Pemain lain boleh menekan zona untuk steal.'}</p>
-        <div class="buzz-actions"><button class="btn ink" id="benarSolo">Benar</button><button class="btn hot" id="salahSolo">Salah</button></div>
+        <p class="hint">Hakim bisa menekan Benar/Salah kapan saja, atau tunggu waktu habis.</p>
       </div>`;
     bindSoloTop();
+    bindSoloJudge('first');
     if(soloSteal===null){
       soloOverlay.querySelectorAll('[data-sp]').forEach(b=>{
         const i=+b.dataset.sp;
         if(i!==soloFirst) b.onclick=()=>soloStealTap(i);
       });
     }
-    soloOverlay.querySelector('#benarSolo').onclick=()=>resolveSoloFirst(true);
-    soloOverlay.querySelector('#salahSolo').onclick=()=>resolveSoloFirst(false,'Jawaban salah');
   };
   const soloStealTap=i=>{
     if(soloPhase!=='first' || soloSteal!==null || i===soloFirst) return;
     soloSteal=i; soloFirstView();
   };
+  const soloJudge=kind=>{
+    if(!soloOverlay || !soloOverlay.isConnected || soloResolved) return;
+    clearTimeout(soloTimer);
+    soloJudging=true;
+    const name=kind==='first'?p[soloFirst]:p[soloSteal];
+    soloOverlay.classList.add('answering');
+    soloOverlay.innerHTML=`${soloTop(false)}<div class="buzz-q">${esc(soloQ)}</div>
+      ${soloGrid()}
+      <div class="buzz-answer">
+        <p class="kicker">Waktu habis · ${esc(name)}</p>
+        <h2 class="big">Jawaban benar?</h2>
+        <p class="hint">Hakim memutuskan sekarang.</p>
+        ${soloJudgeButtons}
+      </div>`;
+    bindSoloTop();
+    bindSoloJudge(kind);
+  };
   const soloStealStart=()=>{
-    soloPhase='steal'; soloResolved=false; soloLeft=3;
+    soloPhase='steal'; soloResolved=false; soloJudging=false; soloLeft=6;
     soloOverlay.classList.add('answering');
     soloOverlay.innerHTML=`${soloTop(false)}<div class="buzz-q">${esc(soloQ)}</div>
       ${soloGrid()}
       <div class="buzz-answer">
         <p class="kicker">Steal · ${esc(p[soloSteal])}</p>
         <div class="who" id="left">${soloLeft}</div>
-        <p class="hint">Jawab dalam 3 detik.</p>
-        <div class="buzz-actions"><button class="btn ink" id="benarSolo">Benar</button><button class="btn hot" id="salahSolo">Salah</button></div>
+        ${soloJudgeButtons}
+        <p class="hint">Jawab dalam 6 detik. Hakim bisa menekan Benar/Salah kapan saja.</p>
       </div>`;
     bindSoloTop();
-    soloOverlay.querySelector('#benarSolo').onclick=()=>resolveSoloSteal(true);
-    soloOverlay.querySelector('#salahSolo').onclick=()=>resolveSoloSteal(false,'Jawaban salah');
+    bindSoloJudge('steal');
     startSoloClock('steal');
   };
   const resolveSoloFirst=(ok,why='')=>{

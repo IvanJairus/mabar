@@ -2,17 +2,34 @@ import { $, S, esc, rand, shuffle, deck, later, wait, clearGame, shell, setStage
 /* ---------- 10. Kata Terlarang ---------- */
 export function gameTaboo(){
   const p=S.players;
-  let i=0, timer=null, left=30, active=false, card=null;
+  let i=0, timer=null, left=30, active=false, done=false, card=null;
   const turn=()=>{
-    active=false;
+    active=false; done=false;
     setStage(`<p class="kicker">Giliran</p><div class="who">${esc(p[i])}</div>
       <p>Polisi sensor: <b>${esc(p[(i+1)%p.length])}</b> (pemain di kananmu).</p>
       <p>Pegang HP menghadapmu. Jelaskan kata rahasia tanpa menyebut 3 kata terlarang. 30 detik.</p>`);
     setActions(`<button class="btn hot xl" id="go">Mulai</button>`);
     $('#go').onclick=play;
   };
+  const success=()=>{
+    if(done) return; done=true; active=false; clearTimeout(timer); beep(1000,.15);
+    setStage(`<p class="kicker">Berhasil</p><h2 class="big">Tebak!</h2><p>${esc(p[i])} berhasil menjelaskan <b>${esc(card.w)}</b>.</p>`);
+    setActions(`<button class="btn ink xl" id="n">Giliran berikutnya</button>`); $('#n').onclick=next;
+  };
+  const judge=()=>{
+    if(done) return; active=false; clearTimeout(timer); beep(300,.18);
+    setStage(`<p class="kicker">Waktu habis</p>
+      <div class="card"><div class="taboo-label">Jelaskan tanpa menyebut</div>
+        <div class="taboo-word">${esc(card.w)}</div>
+        <div class="taboo-no">${card.no.map(w=>`<span>${esc(w)}</span>`).join('')}</div></div>
+      <h2 class="big">Berhasil menebak?</h2>
+      <p>Hakim memutuskan sekarang.</p>`);
+    setActions(`<div class="row"><button class="btn ink" id="ok">Berhasil</button><button class="btn hot" id="no">Gagal</button></div>`);
+    $('#ok').onclick=success;
+    $('#no').onclick=()=>fail('Waktu habis');
+  };
   const play=()=>{
-    card=drawTaboo(); active=true; left=30;
+    card=drawTaboo(); active=true; done=false; left=30;
     setStage(`<p class="kicker">Kata rahasia</p>
       <div class="card"><div class="taboo-label">Jelaskan tanpa menyebut</div>
         <div class="taboo-word">${esc(card.w)}</div>
@@ -21,22 +38,17 @@ export function gameTaboo(){
     setActions(`<div class="row"><button class="btn ink" id="ok">Tebak!</button><button class="btn hot" id="no">Keceplosan</button></div>`);
     beep(900,.2);
     const tick=()=>{
-      if(!active) return;
+      if(!active || done) return;
       left--; const el=$('#clock'); if(el) el.textContent=left;
       if(left>0){ if(left<=5) beep(1200,.05); timer=later(tick,1000); }
-      else fail('Waktu habis');
+      else judge();
     };
     timer=later(tick,1000);
     $('#ok').onclick=success;
     $('#no').onclick=()=>fail('Keceplosan menyebut kata terlarang');
   };
-  const success=()=>{
-    if(!active) return; active=false; clearTimeout(timer); beep(1000,.15);
-    setStage(`<p class="kicker">Berhasil</p><h2 class="big">Tebak!</h2><p>${esc(p[i])} berhasil menjelaskan <b>${esc(card.w)}</b>.</p>`);
-    setActions(`<button class="btn ink xl" id="n">Giliran berikutnya</button>`); $('#n').onclick=next;
-  };
   const fail=why=>{
-    if(!active) return; active=false; clearTimeout(timer); beep(180,.2);
+    if(done) return; done=true; active=false; clearTimeout(timer); beep(180,.2);
     setStage(`<p class="kicker">Gagal</p><h2 class="big">${esc(why)}</h2>`); setActions('');
     later(()=>showHukuman([p[i]],why,next,'tebak'),500);
   };

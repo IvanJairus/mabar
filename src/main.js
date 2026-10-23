@@ -10,7 +10,7 @@ function home(){
   const ranked = [...p].sort((a,b)=>(S.kena[b]||0)-(S.kena[a]||0));
   const maxK = Math.max(0, ...p.map(n=>S.kena[n]||0));
   app.innerHTML = `<div class="wrap">
-    <header class="hero"><h1>Main Rame</h1><p>Satu HP, 2–6 orang, oper-operan. Semua game ada hukumannya.</p></header>
+    <header class="hero"><h1>Mabar</h1><p>Satu HP, 2–6 orang, oper-operan. Semua game ada hukumannya.</p></header>
 
     <section class="sec" aria-labelledby="hp">
       <h2 id="hp">Pemain <small>${p.length}/6</small></h2>

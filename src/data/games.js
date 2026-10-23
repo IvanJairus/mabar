@@ -8,7 +8,6 @@ import { gameRoda } from '../games/roda-hukuman.js';
 import { gameRoulette } from '../games/roulette-jari.js';
 import { gameCepat } from '../games/jawab-cepat.js';
 import { gameTaboo } from '../games/kata-terlarang.js';
-import { gameCharades } from '../games/estafet-tebak-gaya.js';
 import { gameBuzzer } from '../games/adu-bel.js';
 import { gameUndercover } from '../games/cari-penyusup.js';
 import { gameCodenames } from '../games/kode-rahasia.js';
@@ -25,9 +24,8 @@ export const GAMES = [
   {name:'Jawab Cepat', how:'Sebutkan 3 hal sesuai prompt dalam 5 detik. Gagal, kena hukuman.', loud:true, tags:['cepat'], solo:true, run:gameCepat},
   {name:'Kata Terlarang', how:'Jelaskan kata rahasia tanpa menyebut 3 kata terlarang. 30 detik.', loud:true, tags:['tantangan'], solo:true, run:gameTaboo},
   {name:'Cari Penyusup', how:'Satu pemain dapat kata berbeda. Debat, lalu voting siapa penyusupnya.', loud:true, tags:['tantangan'], team:true, min:3, run:gameUndercover},
-  {name:'Adu Bel', how:'Teka-teki cepat. Mode Team atau Solo, yang cepat menekan bel harus jawab dalam 3 detik.', loud:true, tags:['cepat'], solo:true, team:true, run:gameBuzzer},
+  {name:'Adu Bel', how:'Teka-teki cepat. Mode Team atau Solo, yang cepat menekan bel punya 6 detik untuk menjawab.', loud:true, tags:['cepat'], solo:true, team:true, run:gameBuzzer},
   {name:'Kode Rahasia', how:'Beri 1 petunjuk untuk 3 kata tim. Hindari bom tengkorak.', loud:false, tags:['tantangan'], team:true, min:4, run:gameCodenames},
-  {name:'Estafet Tebak Gaya', how:'Satu tim memperagakan, satu perwakilan menebak. 60 detik per tim.', loud:true, tags:['cepat','tantangan'], team:true, min:4, run:gameCharades},
 ];
 
 export const FILTERS = {semua:'Semua', solo:'Solo', team:'Team'};
