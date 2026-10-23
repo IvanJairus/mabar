@@ -4,5 +4,5 @@ export const wait = ms => new Promise(r => later(r, ms));
 export const clearGame = () => {
   timers.forEach(clearTimeout);
   timers = [];
-  document.querySelectorAll('.fs,.rt,.buzz,.rt-flash').forEach(e => e.remove());
+  document.querySelectorAll('.fs,.rt,.buzz,.rt-flash,.cam').forEach(e => e.remove());
 };

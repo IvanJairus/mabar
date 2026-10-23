@@ -4,5 +4,6 @@ export * from './timers.js';
 export * from './audio.js';
 export * from './ui.js';
 export * from './decks.js';
+export * from './color.js';
 export * from './punishment.js';
 export * from './teams.js';

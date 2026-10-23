@@ -3,20 +3,25 @@ import { $, S, esc, shell, setStage, setActions, beep, showHukuman } from '../co
 export function gameStopTimer(){
   const p=S.players;
   const ROUNDS=[
-    {target:3, label:'3 detik'},
-    {target:6, label:'6 detik'},
-    {target:4.5, label:'4,5 detik'},
+    {type:'bulat', min:3, max:6, label:'bulat acak 3–6 detik'},
+    {type:'bulat', min:7, max:10, label:'bulat acak 7–10 detik'},
+    {type:'desimal', label:'desimal acak 3,1–7,9 detik'},
   ];
   let round=0, turn=0, scores=[], roundErrors=[], target=0, startAt=0, running=false;
   const fmt=(n,d=2)=>n.toFixed(d).replace('.',',');
   const targetText=()=>Number.isInteger(target)?String(target):fmt(target,1);
   const totalLine=()=>p.map((n,i)=>`${esc(n)} ${fmt(scores[i])}`).join(' · ');
+  const rollTarget=()=>{
+    const r=ROUNDS[round];
+    if(r.type==='desimal') return 3+Math.floor(Math.random()*5)+(1+Math.floor(Math.random()*9))/10;
+    return r.min+Math.floor(Math.random()*(r.max-r.min+1));
+  };
 
   const turnIntro=()=>{
     running=false;
     setStage(`<p class="kicker">Ronde ${round+1}/${ROUNDS.length} · ${esc(p[turn])}</p>
       <h2 class="big">Target ${targetText()} detik</h2>
-      <p>${round===0?'Angka bulat dulu.':round===1?'Angka bulat lebih panjang.':'Sekarang pakai desimal.'} Tekan Mulai, lalu Stop tanpa melihat angka.</p>
+      <p>${round===0?'Angka bulat acak.':round===1?'Angka bulat acak, lebih panjang.':'Desimal acak.'} Tekan Mulai, lalu Stop tanpa melihat angka.</p>
       ${round>0?`<p class="hint">Total sementara: ${totalLine()}</p>`:''}`);
     setActions(`<button class="btn hot xl" id="go">Mulai</button>`);
     $('#go').onclick=startRun;
@@ -60,7 +65,7 @@ export function gameStopTimer(){
     final();
   };
   const startRound=()=>{
-    target=ROUNDS[round].target; turn=0; roundErrors=Array(p.length).fill(null); running=false;
+    target=rollTarget(); turn=0; roundErrors=Array(p.length).fill(null); running=false;
     turnIntro();
   };
   const final=()=>{
@@ -83,7 +88,7 @@ export function gameStopTimer(){
     round=0; turn=0; scores=Array(p.length).fill(0); running=false;
     shell('Stop the Timer', `<p class="kicker">Uji feeling</p><h2 class="big">Stop the Timer</h2>
       <p>Semua pemain memakai target yang sama di tiap ronde. Lihat target, tekan Mulai, lalu Stop tanpa melihat angka.</p>
-      <p class="hint">Ronde 1: ${ROUNDS[0].label} · Ronde 2: ${ROUNDS[1].label} · Ronde 3: ${ROUNDS[2].label}. Total selisih terkecil menang.</p>`,
+      <p class="hint">Ronde 1: ${ROUNDS[0].label} · Ronde 2: ${ROUNDS[1].label} · Ronde 3: ${ROUNDS[2].label}. Target diacak tiap ronde, sama untuk semua pemain. Total selisih terkecil menang.</p>`,
       `<button class="btn hot xl" id="go">Mulai</button>`);
     $('#go').onclick=startRound;
   };

@@ -200,4 +200,21 @@ dialog::backdrop{background:var(--red)}
 .ch-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%}
 .ch-grid .btn{padding:10px 8px;font-size:15px}
 
+/* Scan kamera Cari Benda */
+.cam{position:fixed;inset:0;z-index:30;background:#000;display:flex;flex-direction:column;overflow:hidden}
+.cam video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000}
+.cam-hud{position:relative;z-index:1;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:calc(16px + env(safe-area-inset-top)) 16px 16px;text-align:center;color:#fff;background:linear-gradient(#0008,#0000 25%,#0000 70%,#000b);pointer-events:none}
+.cam-target{display:flex;align-items:center;gap:10px;background:#000a;border:1px solid #fff5;border-radius:999px;padding:8px 14px;font-weight:700}
+.cam-target i{width:28px;height:28px;border-radius:8px;border:2px solid #fff;display:block}
+.cam-frame{width:min(64vw,260px);aspect-ratio:1;border:3px solid #fff;border-radius:18px;box-shadow:0 0 0 9999px #0005}
+.cam-hint{margin:0;background:#000a;border-radius:8px;padding:6px 10px;font-size:14px}
+.cam-actions{position:relative;z-index:2;display:flex;gap:10px;padding:12px 12px calc(12px + env(safe-area-inset-bottom));background:#000c}
+.cam-actions .btn{flex:1}
+.cam-result,.cam-error{position:absolute;inset:0;z-index:3;background:#000d;display:flex;align-items:flex-start;justify-content:center;padding:calc(16px + env(safe-area-inset-top)) 16px calc(16px + env(safe-area-inset-bottom));overflow-y:auto}
+.cam.has-result .cam-hud,.cam.has-result .cam-actions{visibility:hidden}
+.cam-card{margin:auto;background:var(--card);color:var(--ink);border:var(--line);border-radius:14px;box-shadow:5px 5px 0 #000a;padding:18px;width:100%;max-width:420px;text-align:center}
+.cam-pair{display:flex;justify-content:center;gap:24px;margin:10px 0}
+.cam-pair>div{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--muted)}
+.cam-pair i{width:72px;height:72px;border-radius:16px;border:var(--line);display:block}
+
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}

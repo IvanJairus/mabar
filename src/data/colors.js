@@ -15,6 +15,22 @@ export const HUNT_COLORS = [
   {name:'Hijau muda', hex:'#9BC53D'},
   {name:'Marun', hex:'#7B2D3A'},
   {name:'Krem', hex:'#EADBC8'},
+  {name:'Merah Tua', hex:'#8E2A2A'},
+  {name:'Merah Bata', hex:'#B24A3A'},
+  {name:'Oranye Tua', hex:'#C25A1E'},
+  {name:'Kuning Muda', hex:'#F2E28B'},
+  {name:'Emas', hex:'#C9A227'},
+  {name:'Hijau Tua', hex:'#265C38'},
+  {name:'Hijau Zaitun', hex:'#7A8B4A'},
+  {name:'Biru Langit', hex:'#7FB6D9'},
+  {name:'Biru Muda', hex:'#A8D8EA'},
+  {name:'Lavender', hex:'#B9A7D6'},
+  {name:'Magenta', hex:'#C13A7A'},
+  {name:'Coral', hex:'#E97862'},
+  {name:'Peach', hex:'#F2B590'},
+  {name:'Terakota', hex:'#C96F4A'},
+  {name:'Abu-abu Tua', hex:'#5E5A52'},
+  {name:'Mint', hex:'#9FD8C3'},
 ];
 
 export const START_LETTERS = ['A','B','C','D','G','J','K','L','M','P','R','S','T'];
