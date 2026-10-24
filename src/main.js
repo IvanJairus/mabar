@@ -10,6 +10,9 @@ function home(){
   const ranked = [...p].sort((a,b)=>(S.kena[b]||0)-(S.kena[a]||0));
   const maxK = Math.max(0, ...p.map(n=>S.kena[n]||0));
   app.innerHTML = `<div class="wrap">
+    <div class="home-top">
+      <a class="btn sm home-back" href="https://www.ivanjairus.xyz/" aria-label="Kembali ke ivanjairus.xyz">← ivanjairus.xyz</a>
+    </div>
     <header class="hero"><h1>Mabar</h1><p>Satu HP, 2–6 orang, oper-operan. Semua game ada hukumannya.</p></header>
 
     <section class="sec" aria-labelledby="hp">
