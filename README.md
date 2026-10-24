@@ -63,12 +63,12 @@ Kalau kamera tidak didukung, izin ditolak, atau halaman bukan HTTPS, game menamp
 
 Flip My Voice punya empat mode:
 
-- **Tebak Suara**: aplikasi membangkitkan satu kata dengan suara terdistorsi, lalu semua pemain menebak. Tanpa mikrofon.
+- **Tebak Kata**: aplikasi membalik teks kata lalu membacanya dengan efek suara. Semua pemain menebak kata aslinya. Tanpa mikrofon.
 - **Voice Charades**: satu pemain melihat kata dan menjelaskannya dengan suara lucu selama 45 detik. Pemain lain menebak, hakim menekan Benar atau Lewat.
 - **Flip Chain**: pemain pertama merekam kata, audionya dibalik, pemain berikutnya meniru suara itu, lalu audionya dibalik kembali dan hakim menilai.
 - **Tebak Siapa**: semua pemain merekam satu kalimat dengan suara lucu, lalu tiap pemain menebak satu suara milik siapa.
 
-Flip Chain dan Tebak Siapa memakai mikrofon. Rekaman hanya diproses di browser dan tidak diunggah. Mikrofon butuh HTTPS dan izin; kalau browser tidak mendukung, game menampilkan pesan error dan kembali ke mode lain.
+Efek suara acak di setiap ronde: **chipmunk**, **monster**, dan **vibrato**. Flip Chain dan Tebak Siapa memakai mikrofon. Rekaman hanya diproses di browser dan tidak diunggah. Mikrofon butuh HTTPS dan izin; kalau browser tidak mendukung, game menampilkan pesan error dan kembali ke mode lain.
 
 ## Deploy
 

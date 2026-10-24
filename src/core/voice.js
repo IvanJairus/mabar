@@ -59,15 +59,43 @@ export function reverseBuffer(buffer){
   return out;
 }
 
-export async function playBuffer(buffer, rate=1){
+export async function speakVibrato(text, {rate=1}={}){
+  const chunks=text.match(/.{1,2}/g) || [text];
+  for(let i=0;i<chunks.length;i++){
+    await speakWord(chunks[i], {pitch:i%2?1.5:0.6, rate});
+  }
+}
+
+export async function playBuffer(buffer, {pitch=1, lowpass=false, vibrato=false}={}){
   const c=getAudioContext();
   if(c.state==='suspended') await c.resume();
   return new Promise(resolve=>{
     const src=c.createBufferSource();
     src.buffer=buffer;
-    src.playbackRate.value=rate;
-    src.connect(c.destination);
-    src.onended=()=>resolve();
+    src.playbackRate.value=pitch;
+    let tail=src;
+    if(lowpass){
+      const filter=c.createBiquadFilter();
+      filter.type='lowpass';
+      filter.frequency.value=1200;
+      tail.connect(filter);
+      tail=filter;
+    }
+    tail.connect(c.destination);
+    let lfo=null, lfoGain=null;
+    if(vibrato){
+      lfo=c.createOscillator();
+      lfo.frequency.value=5.5;
+      lfoGain=c.createGain();
+      lfoGain.gain.value=0.08;
+      lfo.connect(lfoGain);
+      lfoGain.connect(src.playbackRate);
+      lfo.start();
+    }
+    src.onended=()=>{
+      if(lfo){ try{ lfo.stop(); }catch(e){} }
+      resolve();
+    };
     src.start();
   });
 }
