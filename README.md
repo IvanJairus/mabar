@@ -1,14 +1,14 @@
 # Mabar
 
-**15 game pesta untuk 2–6 orang di satu HP.**
+**16 game pesta untuk 2–6 orang di satu HP.**
 
-A 15-game party app for 2–6 players on one phone.
+A 16-game party app for 2–6 players on one phone.
 
 Live: **https://www.ivanjairus.xyz/mabar/**
 
 ## Isi
 
-- 15 game: Bom Waktu, Tekan Duluan, Tebak Gaya, Siapa Paling...?, Jujur atau Berani, Dadu Nasib, Roda Hukuman, Roulette Jari, Jawab Cepat, Kata Terlarang, Cari Penyusup, Cari Benda, Adu Bel, Stop the Timer, dan Kode Rahasia.
+- 16 game: Bom Waktu, Tekan Duluan, Tebak Gaya, Siapa Paling...?, Jujur atau Berani, Dadu Nasib, Roda Hukuman, Roulette Jari, Jawab Cepat, Kata Terlarang, Cari Penyusup, Cari Benda, Flip My Voice, Adu Bel, Stop the Timer, dan Kode Rahasia.
 - 1.451 kartu bank utama, plus 32 kartu warna dan prompt dinamis untuk Cari Benda.
 - Filter Solo dan Team. Beberapa game punya mode lokal, tim, atau free-for-all.
 - Hukuman per game, bukan satu dek global, supaya tempo tiap game tetap pas.
@@ -38,7 +38,7 @@ Kamera hanya bisa dipakai di secure context: HTTPS atau localhost. Kalau dibuka 
 ## Struktur
 
 ```text
-src/core/      state, UI, audio, timer, deck, hukuman, tim, warna
+src/core/      state, UI, audio, suara, timer, deck, hukuman, tim, warna
 src/data/      bank kartu, palet warna, dan katalog game
 src/games/     satu file per game
 src/main.js    home, pemain, filter, toast
@@ -58,6 +58,16 @@ public/        favicon dan ikon
 Scan warna mengambil satu frame dari kamera, memotong area tengah, lalu menghitung rata-rata RGB dan jarak warna di ruang Lab. Semua proses terjadi di browser. Tidak ada frame yang dikirim ke server.
 
 Kalau kamera tidak didukung, izin ditolak, atau halaman bukan HTTPS, game menampilkan pesan error dan hakim bisa menilai manual.
+
+## Suara dan privasi
+
+Flip My Voice punya tiga mode:
+
+- **Voice Charades**: satu pemain melihat kata dan menjelaskannya dengan suara lucu selama 45 detik. Pemain lain menebak, hakim menekan Benar atau Lewat.
+- **Flip Chain**: pemain pertama merekam kata, audionya dibalik, pemain berikutnya meniru suara itu, lalu audionya dibalik kembali dan hakim menilai.
+- **Tebak Siapa**: semua pemain merekam satu kalimat dengan suara lucu, lalu tiap pemain menebak satu suara milik siapa.
+
+Flip Chain dan Tebak Siapa memakai mikrofon. Rekaman hanya diproses di browser dan tidak diunggah. Mikrofon butuh HTTPS dan izin; kalau browser tidak mendukung, game menampilkan pesan error dan kembali ke mode lain.
 
 ## Deploy
 

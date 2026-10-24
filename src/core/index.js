@@ -2,6 +2,7 @@ export * from './random.js';
 export * from './state.js';
 export * from './timers.js';
 export * from './audio.js';
+export * from './voice.js';
 export * from './ui.js';
 export * from './decks.js';
 export * from './color.js';
