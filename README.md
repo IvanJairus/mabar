@@ -63,11 +63,13 @@ Kalau kamera tidak didukung, izin ditolak, atau halaman bukan HTTPS, game menamp
 
 Flip My Voice punya tiga mode:
 
-- **Tebak Kata**: aplikasi membalik teks kata lalu membacanya dengan efek suara. Semua pemain menebak kata aslinya. Tanpa mikrofon.
+- **Tebak Kata**: aplikasi memutar kata dari bank audio yang sudah dibalik dan diberi efek. Semua pemain menebak kata aslinya. Suara sama di semua perangkat dan tanpa mikrofon.
 - **Flip Chain**: pemain pertama merekam kata, audionya dibalik dan diberi efek, pemain berikutnya meniru suara itu, lalu audionya dibalik kembali dan hakim menilai.
 - **Tebak Siapa**: semua pemain merekam satu kalimat dengan suara lucu, lalu tiap pemain menebak satu suara milik siapa.
 
 Efek suara acak di setiap ronde: **chipmunk**, **monster**, dan **vibrato**. Flip Chain dan Tebak Siapa memakai mikrofon. Rekaman hanya diproses di browser dan tidak diunggah. Mikrofon butuh HTTPS dan izin; kalau browser tidak mendukung, game menampilkan pesan error dan kembali ke mode lain.
+
+Bank audio Tebak Kata ada di `public/voice/words/`. File dibuat dengan eSpeak NG 1.52.0 voice Indonesia. eSpeak NG berlisensi GPLv3; file MP3 di folder itu adalah output audio yang dipakai sebagai data game. Detail ada di `public/voice/words/NOTICE.txt`.
 
 ## Deploy
 

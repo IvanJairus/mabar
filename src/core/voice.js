@@ -1,29 +1,25 @@
 let ctx;
+let currentSource=null;
 const AudioCtor = window.AudioContext || window.webkitAudioContext;
 
-export const canSpeak = () => typeof window.speechSynthesis !== 'undefined' && typeof window.SpeechSynthesisUtterance !== 'undefined';
+export const canPlay = () => !!AudioCtor;
 export const canRecord = () => !!(navigator.mediaDevices?.getUserMedia && window.MediaRecorder && AudioCtor);
 export const getAudioContext = () => {
   if(!ctx) ctx = new AudioCtor();
   return ctx;
 };
-export function stopSpeech(){
-  if(canSpeak()) speechSynthesis.cancel();
+
+export function stopAudio(){
+  if(currentSource){
+    try{ currentSource.stop(); }catch(e){}
+    currentSource=null;
+  }
 }
-export async function speakWord(text, {pitch=1, rate=1}={}){
-  if(!canSpeak()) throw new Error('speak-unsupported');
-  return new Promise((resolve,reject)=>{
-    const u=new SpeechSynthesisUtterance(text);
-    u.lang='id-ID';
-    u.pitch=pitch;
-    u.rate=rate;
-    const voice=speechSynthesis.getVoices().find(v=>(v.lang||'').toLowerCase().startsWith('id'));
-    if(voice) u.voice=voice;
-    u.onend=()=>resolve();
-    u.onerror=e=>reject(e);
-    speechSynthesis.cancel();
-    speechSynthesis.speak(u);
-  });
+
+export async function loadBuffer(url){
+  const res=await fetch(url);
+  if(!res.ok) throw new Error('audio-fetch');
+  return getAudioContext().decodeAudioData(await res.arrayBuffer());
 }
 
 export async function recordClip(ms=3000, onTick){
@@ -59,17 +55,11 @@ export function reverseBuffer(buffer){
   return out;
 }
 
-export async function speakVibrato(text, {rate=1}={}){
-  const chunks=text.match(/.{1,2}/g) || [text];
-  for(let i=0;i<chunks.length;i++){
-    await speakWord(chunks[i], {pitch:i%2?1.5:0.6, rate});
-  }
-}
-
 export async function playBuffer(buffer, {pitch=1, lowpass=false, vibrato=false}={}){
   const c=getAudioContext();
   if(c.state==='suspended') await c.resume();
   return new Promise(resolve=>{
+    stopAudio();
     const src=c.createBufferSource();
     src.buffer=buffer;
     src.playbackRate.value=pitch;
@@ -82,17 +72,19 @@ export async function playBuffer(buffer, {pitch=1, lowpass=false, vibrato=false}
       tail=filter;
     }
     tail.connect(c.destination);
-    let lfo=null, lfoGain=null;
+    let lfo=null;
     if(vibrato){
       lfo=c.createOscillator();
       lfo.frequency.value=5.5;
-      lfoGain=c.createGain();
+      const lfoGain=c.createGain();
       lfoGain.gain.value=0.08;
       lfo.connect(lfoGain);
       lfoGain.connect(src.playbackRate);
       lfo.start();
     }
+    currentSource=src;
     src.onended=()=>{
+      if(currentSource===src) currentSource=null;
       if(lfo){ try{ lfo.stop(); }catch(e){} }
       resolve();
     };

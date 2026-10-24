@@ -1,4 +1,4 @@
-import { $, S, esc, rand, shuffle, shell, setStage, setActions, showHukuman, canSpeak, canRecord, recordClip, reverseBuffer, playBuffer, speakWord, speakVibrato, stopSpeech } from '../core/index.js';
+import { $, S, esc, rand, shuffle, shell, setStage, setActions, showHukuman, canPlay, canRecord, loadBuffer, recordClip, reverseBuffer, playBuffer, stopAudio } from '../core/index.js';
 import { VOICE_WORDS, VOICE_SENTENCE } from '../data/voice.js';
 /* ---------- 16. Flip My Voice ---------- */
 export function gameFlipVoice(){
@@ -14,9 +14,10 @@ export function gameFlipVoice(){
   let mode='', scores=[], round=0, total=0, deck=[], word='', phase='setup', roundEffect='chipmunk';
   let speaker=0, guesser=0, speakerAudio=null, guessAudio=null;
   let buffers=[], effects=[], order=[], voiceSpeaker=-1, voiceGuesser=-1, voiceReplays=0;
+  const wordBuffers=new Map();
 
   const scoreLine=()=>p.map((n,i)=>`${esc(n)} ${scores[i]}`).join(' · ');
-  const stopAll=()=>stopSpeech();
+  const stopAll=()=>stopAudio();
   const showError=(msg,retry)=>{
     stopAll(); phase='error';
     setStage(`<p class="kicker">Audio tidak tersedia</p><h2 class="big">${esc(msg)}</h2>
@@ -57,7 +58,7 @@ export function gameFlipVoice(){
   };
   const gateStart=m=>{
     if(m==='kata'){
-      if(!canSpeak()) return showError('Browser ini belum mendukung suara otomatis. Buka di Chrome atau Safari terbaru.');
+      if(!canPlay()) return showError('Browser ini belum mendukung pemutaran audio. Buka di Chrome atau Safari terbaru.');
     } else {
       if(!window.isSecureContext) return showError('Mikrofon butuh HTTPS. Buka lewat link Vercel atau localhost.');
       if(!canRecord()) return showError('Browser ini belum mendukung rekaman audio. Buka di Chrome Android atau Safari iOS terbaru.');
@@ -72,24 +73,30 @@ export function gameFlipVoice(){
   const introKata=()=>{
     stopAll(); phase='setup'; roundEffect=rand(EFFECTS);
     setStage(`<p class="kicker">Tebak Kata · ${round+1}/${total}</p><h2 class="big">Siap dengar?</h2>
-      <p>Aplikasi membalik kata lalu membacanya dengan efek suara. Semua pemain menebak kata aslinya. Tidak ada pemain yang memberi clue.</p>
+      <p>Aplikasi memutar kata dari bank audio yang sudah dibalik dan diberi efek. Semua pemain menebak kata aslinya. Tidak ada pemain yang memberi clue.</p>
       <p class="hint">Efek suara: <b>${EFFECT_LABEL[roundEffect]}</b>. ${scoreLine()}</p>`);
     setActions(`<button class="btn hot xl" id="playK">Putar kata</button>`);
     $('#playK').onclick=playKata;
   };
-  const speakKata=()=>{
-    const hint=$('#voiceHint'); if(hint) hint.textContent='Memutar kata...';
-    const reversed=[...word].reverse().join('');
-    const pfx=roundEffect==='chipmunk'?speakWord(reversed,{pitch:1.65,rate:1.15})
-      :roundEffect==='monster'?speakWord(reversed,{pitch:0.45,rate:0.85})
-      :speakVibrato(reversed,{rate:1.05});
-    pfx.then(()=>{ const h=$('#voiceHint'); if(h) h.textContent='Sudah diputar. Tap nama pemain yang pertama benar.'; })
-      .catch(()=>showError('Suara otomatis gagal diputar.', ()=>playKata()));
+  const speakKata=async()=>{
+    const hint=$('#voiceHint'); if(hint) hint.textContent='Memuat suara...';
+    const slug=word.toLowerCase().replace(/[^a-z0-9]+/g,'-');
+    try{
+      if(!wordBuffers.has(slug)){
+        wordBuffers.set(slug, await loadBuffer(`${import.meta.env.BASE_URL}voice/words/${slug}.mp3`));
+      }
+      if(phase==='done' || !$('#voiceHint')) return;
+      const h=$('#voiceHint'); if(h) h.textContent='Memutar kata...';
+      await playBuffer(reverseBuffer(wordBuffers.get(slug)), effectParams(roundEffect));
+      const done=$('#voiceHint'); if(done) done.textContent='Sudah diputar. Tap nama pemain yang pertama benar.';
+    }catch(e){
+      showError('Bank suara tidak bisa dimuat. Coba lagi.', ()=>playKata());
+    }
   };
   const renderPlayKata=()=>{
     setStage(`<p class="kicker">Dengarkan · ${EFFECT_LABEL[roundEffect]}</p><h2 class="big">Kata apa itu?</h2>
       <div class="voice-wave" aria-hidden="true">${'<i></i>'.repeat(7)}</div>
-      <p class="hint" id="voiceHint">Kata sudah dibalik dan diputar. Tap nama pemain yang pertama benar.</p>
+      <p class="hint" id="voiceHint">Kata dibalik dari bank suara. Tap nama pemain yang pertama benar.</p>
       <details class="voice-answer"><summary>Lihat jawaban (hakim)</summary><b>${esc(word)}</b></details>`);
     setActions(`<div class="ch-grid">${p.map((n,i)=>`<button class="btn" data-guess="${i}">${esc(n)}</button>`).join('')}</div>
       <div class="row"><button class="btn" id="replayK">Putar ulang (2)</button><button class="btn" id="noneK">Tidak ada</button></div>`);
