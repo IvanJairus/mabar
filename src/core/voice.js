@@ -1,11 +1,30 @@
 let ctx;
 const AudioCtor = window.AudioContext || window.webkitAudioContext;
 
+export const canSpeak = () => typeof window.speechSynthesis !== 'undefined' && typeof window.SpeechSynthesisUtterance !== 'undefined';
 export const canRecord = () => !!(navigator.mediaDevices?.getUserMedia && window.MediaRecorder && AudioCtor);
 export const getAudioContext = () => {
   if(!ctx) ctx = new AudioCtor();
   return ctx;
 };
+export function stopSpeech(){
+  if(canSpeak()) speechSynthesis.cancel();
+}
+export async function speakWord(text, {pitch=1, rate=1}={}){
+  if(!canSpeak()) throw new Error('speak-unsupported');
+  return new Promise((resolve,reject)=>{
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang='id-ID';
+    u.pitch=pitch;
+    u.rate=rate;
+    const voice=speechSynthesis.getVoices().find(v=>(v.lang||'').toLowerCase().startsWith('id'));
+    if(voice) u.voice=voice;
+    u.onend=()=>resolve();
+    u.onerror=e=>reject(e);
+    speechSynthesis.cancel();
+    speechSynthesis.speak(u);
+  });
+}
 
 export async function recordClip(ms=3000, onTick){
   const stream=await navigator.mediaDevices.getUserMedia({audio:true});

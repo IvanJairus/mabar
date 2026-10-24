@@ -1,4 +1,4 @@
-import { $, S, esc, shuffle, later, shell, setStage, setActions, beep, showHukuman, canRecord, recordClip, reverseBuffer, playBuffer } from '../core/index.js';
+import { $, S, esc, shuffle, later, shell, setStage, setActions, beep, showHukuman, canSpeak, canRecord, recordClip, reverseBuffer, playBuffer, speakWord, stopSpeech } from '../core/index.js';
 import { VOICE_WORDS, VOICE_SENTENCE } from '../data/voice.js';
 /* ---------- 16. Flip My Voice ---------- */
 export function gameFlipVoice(){
@@ -9,7 +9,7 @@ export function gameFlipVoice(){
   let buffers=[], rates=[], order=[], voiceSpeaker=-1, voiceGuesser=-1, voiceReplays=0;
 
   const scoreLine=()=>p.map((n,i)=>`${esc(n)} ${scores[i]}`).join(' · ');
-  const stopAll=()=>{ clearTimeout(timer); };
+  const stopAll=()=>{ clearTimeout(timer); stopSpeech(); };
   const showError=(msg,retry)=>{
     stopAll(); phase='error';
     setStage(`<p class="kicker">Audio tidak tersedia</p><h2 class="big">${esc(msg)}</h2>
@@ -28,7 +28,7 @@ export function gameFlipVoice(){
   };
   const nextRound=()=>{
     round++;
-    if(round<total) return mode==='tebak'?intro1():mode==='flip'?intro2():intro3();
+    if(round<total) return mode==='tebak'?intro1():mode==='suara'?introSuara():mode==='flip'?intro2():intro3();
     final();
   };
   const final=()=>{
@@ -49,7 +49,9 @@ export function gameFlipVoice(){
     $('#again').onclick=setup;
   };
   const gateStart=m=>{
-    if(m!=='tebak'){
+    if(m==='suara'){
+      if(!canSpeak()) return showError('Browser ini belum mendukung suara otomatis. Buka di Chrome atau Safari terbaru.');
+    } else if(m!=='tebak'){
       if(!window.isSecureContext) return showError('Mikrofon butuh HTTPS. Buka lewat link Vercel atau localhost.');
       if(!canRecord()) return showError('Browser ini belum mendukung rekaman audio. Buka di Chrome Android atau Safari iOS terbaru.');
     }
@@ -57,6 +59,7 @@ export function gameFlipVoice(){
     speakerAudio=null; guessAudio=null; buffers=[]; rates=[]; order=[];
     voiceDeck=shuffle(VOICE_WORDS); voiceIndex=0; turnScore=0; left=45;
     if(m==='tebak'){ total=p.length; intro1(); }
+    else if(m==='suara'){ total=5; introSuara(); }
     else if(m==='flip'){ total=p.length; intro2(); }
     else { total=p.length; recordIntro3(0); }
   };
@@ -106,6 +109,45 @@ export function gameFlipVoice(){
       else endTurn1();
     };
     timer=later(tick,1000);
+  };
+
+  const introSuara=()=>{
+    stopAll(); phase='setup';
+    setStage(`<p class="kicker">Tebak Suara · ${round+1}/${total}</p><h2 class="big">Siap dengar?</h2>
+      <p>Aplikasi memutar satu kata dengan suara aneh. Semua pemain menebak. Tidak ada pemain yang memberi clue. Hakim menekan nama yang pertama benar.</p>
+      <p class="hint">${scoreLine()}</p>`);
+    setActions(`<button class="btn hot xl" id="playS">Putar suara</button>`);
+    $('#playS').onclick=playSuara;
+  };
+  const speakSuara=()=>{
+    const hint=$('#voiceHint'); if(hint) hint.textContent='Memutar suara...';
+    speakWord(word,{pitch:0.45+Math.random()*1.1,rate:0.65+Math.random()*0.5})
+      .then(()=>{ const h=$('#voiceHint'); if(h) h.textContent='Sudah diputar. Tap nama pemain yang pertama benar.'; })
+      .catch(()=>showError('Suara otomatis gagal diputar.', ()=>playSuara()));
+  };
+  const renderPlaySuara=()=>{
+    setStage(`<p class="kicker">Dengarkan</p><h2 class="big">Suara apa itu?</h2>
+      <div class="voice-wave" aria-hidden="true">${'<i></i>'.repeat(7)}</div>
+      <p class="hint" id="voiceHint">Suara sudah diputar. Tap nama pemain yang pertama benar.</p>
+      <details class="voice-answer"><summary>Lihat jawaban (hakim)</summary><b>${esc(word)}</b></details>`);
+    setActions(`<div class="ch-grid">${p.map((n,i)=>`<button class="btn" data-guess="${i}">${esc(n)}</button>`).join('')}</div>
+      <div class="row"><button class="btn" id="replayS">Putar ulang (2)</button><button class="btn" id="noneS">Tidak ada</button></div>`);
+    let replays=0;
+    document.querySelectorAll('[data-guess]').forEach(b=>b.onclick=()=>finish(+b.dataset.guess, `<p>Kata: <b>${esc(word)}</b></p>`));
+    $('#replayS').onclick=()=>{
+      if(replays>=2) return;
+      replays++;
+      const leftReplays=2-replays;
+      $('#replayS').textContent=`Putar ulang (${leftReplays})`;
+      if(leftReplays===0) $('#replayS').disabled=true;
+      speakSuara();
+    };
+    $('#noneS').onclick=()=>finish(null, `<p>Kata: <b>${esc(word)}</b></p>`);
+  };
+  const playSuara=()=>{
+    word=deck[round];
+    renderPlaySuara();
+    speakSuara();
   };
 
   const intro2=()=>{
@@ -237,11 +279,12 @@ export function gameFlipVoice(){
     stopAll(); phase='setup'; mode=''; round=0; scores=[]; total=0; deck=[]; voiceDeck=[]; voiceIndex=0; turnScore=0;
     speakerAudio=null; guessAudio=null; buffers=[]; rates=[]; order=[];
     setStage(`<p class="kicker">Suara & tebakan</p><h2 class="big">Flip My Voice</h2>
-      <p>Tiga mode. Voice Charades dimainkan langsung tanpa mikrofon. Flip Chain dan Tebak Siapa merekam suara dan diproses lokal.</p>
+      <p>Empat mode. Voice Charades dan Tebak Suara tanpa mikrofon. Flip Chain dan Tebak Siapa merekam suara dan diproses lokal.</p>
       <div class="namegrid">
         <button class="btn" data-vm="tebak">Voice Charades</button>
+        <button class="btn ink" data-vm="suara">Tebak Suara</button>
         <button class="btn" data-vm="flip">Flip Chain</button>
-        <button class="btn ink" data-vm="siapa" style="grid-column:span 2">Tebak Siapa</button>
+        <button class="btn" data-vm="siapa">Tebak Siapa</button>
       </div>
       <p class="hint">Butuh 2–6 pemain. Mikrofon hanya aktif saat merekam.</p>`);
     setActions('');
