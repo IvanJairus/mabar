@@ -1,4 +1,4 @@
-import { $, S, esc, rand, shuffle, later, shell, setStage, setActions, beep, showHukuman, canSpeak, canRecord, recordClip, reverseBuffer, playBuffer, speakWord, speakVibrato, stopSpeech } from '../core/index.js';
+import { $, S, esc, rand, shuffle, shell, setStage, setActions, showHukuman, canSpeak, canRecord, recordClip, reverseBuffer, playBuffer, speakWord, speakVibrato, stopSpeech } from '../core/index.js';
 import { VOICE_WORDS, VOICE_SENTENCE } from '../data/voice.js';
 /* ---------- 16. Flip My Voice ---------- */
 export function gameFlipVoice(){
@@ -11,13 +11,12 @@ export function gameFlipVoice(){
     if(effect==='vibrato') return {pitch:1, vibrato:true};
     return {pitch:1};
   };
-  let mode='', scores=[], round=0, total=0, deck=[], word='', timer=null, phase='setup', roundEffect='chipmunk';
-  let voiceDeck=[], voiceIndex=0, turnScore=0, left=45;
+  let mode='', scores=[], round=0, total=0, deck=[], word='', phase='setup', roundEffect='chipmunk';
   let speaker=0, guesser=0, speakerAudio=null, guessAudio=null;
   let buffers=[], effects=[], order=[], voiceSpeaker=-1, voiceGuesser=-1, voiceReplays=0;
 
   const scoreLine=()=>p.map((n,i)=>`${esc(n)} ${scores[i]}`).join(' · ');
-  const stopAll=()=>{ clearTimeout(timer); stopSpeech(); };
+  const stopAll=()=>stopSpeech();
   const showError=(msg,retry)=>{
     stopAll(); phase='error';
     setStage(`<p class="kicker">Audio tidak tersedia</p><h2 class="big">${esc(msg)}</h2>
@@ -36,7 +35,7 @@ export function gameFlipVoice(){
   };
   const nextRound=()=>{
     round++;
-    if(round<total) return mode==='tebak'?intro1():mode==='kata'?introKata():mode==='flip'?intro2():intro3();
+    if(round<total) return mode==='kata'?introKata():mode==='flip'?intro2():intro3();
     final();
   };
   const final=()=>{
@@ -59,64 +58,15 @@ export function gameFlipVoice(){
   const gateStart=m=>{
     if(m==='kata'){
       if(!canSpeak()) return showError('Browser ini belum mendukung suara otomatis. Buka di Chrome atau Safari terbaru.');
-    } else if(m!=='tebak'){
+    } else {
       if(!window.isSecureContext) return showError('Mikrofon butuh HTTPS. Buka lewat link Vercel atau localhost.');
       if(!canRecord()) return showError('Browser ini belum mendukung rekaman audio. Buka di Chrome Android atau Safari iOS terbaru.');
     }
     mode=m; scores=Array(p.length).fill(0); round=0; deck=shuffle(VOICE_WORDS);
     speakerAudio=null; guessAudio=null; buffers=[]; effects=[]; order=[];
-    voiceDeck=shuffle(VOICE_WORDS); voiceIndex=0; turnScore=0; left=45;
-    if(m==='tebak'){ total=p.length; intro1(); }
-    else if(m==='kata'){ total=5; introKata(); }
+    if(m==='kata'){ total=5; introKata(); }
     else if(m==='flip'){ total=p.length; intro2(); }
     else { total=p.length; recordIntro3(0); }
-  };
-
-  const nextWord1=()=>{
-    if(voiceIndex>=voiceDeck.length){ voiceDeck=shuffle(VOICE_WORDS); voiceIndex=0; }
-    return voiceDeck[voiceIndex++];
-  };
-  const intro1=()=>{
-    stopAll(); phase='setup'; roundEffect=rand(EFFECTS);
-    setStage(`<p class="kicker">Voice Charades · ${round+1}/${total}</p><h2 class="big">Giliran ${esc(p[round])}</h2>
-      <p>Pegang HP menghadapmu. Jelaskan kata dengan suara lucu, tanpa gerakan. Pemain lain menebak.</p>
-      <p class="hint">Efek suara: <b>${EFFECT_LABEL[roundEffect]}</b>. Hakim menekan Benar atau Lewat. ${scoreLine()}</p>`);
-    setActions(`<button class="btn hot xl" id="start1">Mulai 45 detik</button>`);
-    $('#start1').onclick=startTurn1;
-  };
-  const renderTurn1=()=>{
-    setStage(`<p class="kicker">Giliran ${esc(p[round])} · ${round+1}/${total}</p>
-      <div class="card"><div class="txt">${esc(word)}</div></div>
-      <div class="who" id="clock1" style="font-size:56px">${left}</div>
-      <p class="hint">Efek: <b>${EFFECT_LABEL[roundEffect]}</b> · tanpa gerakan. Hakim menekan Benar/Lewat.</p>`);
-    setActions(`<div class="row"><button class="btn ink" id="ok1">Benar</button><button class="btn hot" id="skip1">Lewat</button></div>`);
-    $('#ok1').onclick=()=>{
-      if(phase!=='search') return;
-      scores[round]++; turnScore++; beep(1000,.1);
-      word=nextWord1(); renderTurn1();
-    };
-    $('#skip1').onclick=()=>{
-      if(phase!=='search') return;
-      beep(300,.05); word=nextWord1(); renderTurn1();
-    };
-  };
-  const endTurn1=()=>{
-    stopAll(); phase='done';
-    setStage(`<p class="kicker">Giliran ${round+1}/${total}</p><h2 class="big">${esc(p[round])} dapat ${turnScore}</h2>
-      <p class="hint">${scoreLine()}</p>`);
-    setActions(`<button class="btn ink xl" id="next1">${round<total-1?'Pemain berikutnya':'Lihat hasil'}</button>`);
-    $('#next1').onclick=()=>{ round++; if(round<total) intro1(); else final(); };
-  };
-  const startTurn1=()=>{
-    stopAll(); phase='search'; turnScore=0; left=45; word=nextWord1();
-    renderTurn1();
-    const tick=()=>{
-      if(phase!=='search') return;
-      left--; const el=$('#clock1'); if(el) el.textContent=left;
-      if(left>0){ if(left<=5) beep(1200,.05); timer=later(tick,1000); }
-      else endTurn1();
-    };
-    timer=later(tick,1000);
   };
 
   const introKata=()=>{
@@ -287,13 +237,12 @@ export function gameFlipVoice(){
   };
 
   const setup=()=>{
-    stopAll(); phase='setup'; mode=''; round=0; scores=[]; total=0; deck=[]; voiceDeck=[]; voiceIndex=0; turnScore=0;
+    stopAll(); phase='setup'; mode=''; round=0; scores=[]; total=0; deck=[];
     speakerAudio=null; guessAudio=null; buffers=[]; effects=[]; order=[];
     setStage(`<p class="kicker">Suara & tebakan</p><h2 class="big">Flip My Voice</h2>
-      <p>Empat mode. Voice Charades dan Tebak Kata tanpa mikrofon. Flip Chain dan Tebak Siapa merekam suara. Efek acak: chipmunk, monster, vibrato.</p>
+      <p>Tiga mode. Tebak Kata tanpa mikrofon. Flip Chain dan Tebak Siapa merekam suara. Efek acak: chipmunk, monster, vibrato.</p>
       <div class="namegrid">
-        <button class="btn" data-vm="tebak">Voice Charades</button>
-        <button class="btn ink" data-vm="kata">Tebak Kata</button>
+        <button class="btn ink" data-vm="kata" style="grid-column:span 2">Tebak Kata</button>
         <button class="btn" data-vm="flip">Flip Chain</button>
         <button class="btn" data-vm="siapa">Tebak Siapa</button>
       </div>
