@@ -37,7 +37,7 @@ export function gameRoulette(){
       if(phase!=='count' || !dots.size) return;
       const ids=[...dots.keys()], chosen=dots.get(rand(ids));
       chosen.el.classList.add('hit');
-      finish(chosen.name,'Roulette jari memilihmu');
+      finish(chosen.name,'Jarimu terpilih oleh takdir');
     };
     const tick=()=>{
       if(phase!=='count') return;

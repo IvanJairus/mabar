@@ -48,7 +48,7 @@ export function gameTebak(){
         <div class="teams">
           ${p.map((n,k) => `<div class="teamrow"><span>${esc(n)}</span><div class="picks">${Array.from({length:teamCount},(_,t) => `<button data-p="${k}" data-t="${t}" aria-pressed="${teamOf[n]===t}">Tim ${t+1}</button>`).join('')}</div></div>`).join('')}
         </div>
-        <p class="hint">${teams.map((m,t) => `Tim ${t+1}: ${m.length} orang`).join(' · ')}. ${teams.some(t => !t.length) ? 'Ada tim kosong.' : 'Tim boleh tidak seimbang.'}</p>
+        <p class="hint">${teams.map((m,t) => `Tim ${t+1}: ${m.length} orang`).join(' · ')}. ${teams.some(t => !t.length) ? 'Ada tim kosong.' : 'Tim nggak harus seimbang.'}</p>
       ` : ''}`);
     document.querySelector('.game')?.classList.add('fit');
     if(stage) stage.scrollTop = keepScroll;

@@ -185,7 +185,7 @@ export function gameColorHunt(){
   const finishRound=(winner, detail='')=>{
     phase='done'; clearTimeout(timer); closeCamera();
     if(winner!==null) scores[winner]++;
-    setStage(`<p class="kicker">Ronde ${round+1}/${order.length}</p><h2 class="big">${winner!==null?`${esc(p[winner])} dapat!`:'Tidak ada yang dapat'}</h2>
+    setStage(`<p class="kicker">Ronde ${round+1}/${order.length}</p><h2 class="big">${winner!==null?`${esc(p[winner])} dapat!`:'Nggak ada yang dapet poin'}</h2>
       ${detail}<p class="hint">${scoreLine()}</p>`);
     setActions(`<button class="btn ink xl" id="next">${round<order.length-1?'Ronde berikutnya':'Lihat hasil'}</button>`);
     $('#next').onclick=nextRound;
@@ -194,7 +194,7 @@ export function gameColorHunt(){
     if(phase!=='search') return;
     clearTimeout(timer); phase='ending';
     if(reason==='none' || !arrivals.length){
-      return finishRound(null, `<p>${prompt.text}</p><p class="hint">Tidak ada yang kembali.</p>`);
+      return finishRound(null, `<p>${prompt.text}</p><p class="hint">Nggak ada yang kembali.</p>`);
     }
     if(prompt.color) return scanPanel(reason);
     wordRank=0; renderWordJudge(reason);
@@ -250,7 +250,7 @@ export function gameColorHunt(){
     const ranked=p.map((n,i)=>({n,s:scores[i]})).sort((a,b)=>b.s-a.s);
     setStage(`<p class="kicker">Hasil</p><div class="board" style="width:100%">
       ${ranked.map(({n,s})=>`<div class="${s===min?'top':''}"><span>${esc(n)}</span><b>${s}</b></div>`).join('')}</div>
-      <p class="hint">${max===0?'Tidak ada yang dapat poin. Coba clue yang lebih mudah.':min===max?'Semua seri, tidak ada yang dihukum.':'Poin terendah kena hukuman.'}</p>`);
+      <p class="hint">${max===0?'Nggak ada yang dapet poin. Coba clue yang lebih gampang.':min===max?'Semua seri, aman semua.':'Poin terendah kena hukuman.'}</p>`);
     if(max===0 || min===max){
       setActions(`<button class="btn hot xl" id="again">Main lagi</button>`);
       $('#again').onclick=setup;

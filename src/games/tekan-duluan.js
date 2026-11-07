@@ -22,7 +22,7 @@ export function gameTekan(){
     const finish = (losers, why) => {
       phase='result'; clearTimeout(t);
       losers.forEach(k => zones[k].classList.add('loser'));
-      later(() => showHukuman(losers.map(k=>p[k]), why, () => { fs.className='fs'; sig.textContent='Siap ronde berikutnya?'; }, 'tekan'), 700);
+      later(() => showHukuman(losers.map(k=>p[k]), why, () => { fs.className='fs'; sig.textContent='Gas ronde berikutnya?'; }, 'tekan'), 700);
     };
     zones.forEach(z => z.onpointerdown = e => {
       e.preventDefault(); const k=+z.dataset.k;

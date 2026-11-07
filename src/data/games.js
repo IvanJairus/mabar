@@ -16,15 +16,15 @@ import { gameStopTimer } from '../games/stop-timer.js';
 import { gameFlipVoice } from '../games/flip-voice.js';
 
 export const GAMES = [
-  {name:'Bom Waktu', how:'Jawab sesuai kategori, oper HP ke kanan. Bom meledak di tangan siapa, dia yang kena.', loud:true, tags:['cepat'], solo:true, run:gameBom},
+  {name:'Bom Waktu', how:'Jawab sesuai kategori, oper HP ke kanan. Yang megang HP pas bom meledak, dia yang kena. Jangan jadi orang itu', loud:true, tags:['cepat'], solo:true, run:gameBom},
   {name:'Tekan Duluan', how:'HP di tengah, semua jari siap. Curi start atau paling lambat langsung kena.', loud:true, tags:['cepat'], solo:true, run:gameTekan},
   {name:'Tebak Gaya', how:'HP di jidat, teman kasih kode pakai gaya. Bisa per orang atau per tim, durasi bebas.', loud:true, tags:['tantangan'], solo:true, team:true, run:gameTebak},
   {name:'Siapa Paling...?', how:'Hitungan ketiga semua nunjuk orang. Yang paling banyak ditunjuk, kena.', loud:true, tags:[], solo:true, min:3, run:gameSiapa},
-  {name:'Jujur atau Berani', how:'Pertanyaan jujur atau tantangan berani. Nolak berarti hukuman.', loud:false, tags:['tantangan'], solo:true, run:gameTod},
+  {name:'Jujur atau Berani', how:'Jawab jujur atau lakuin tantangan. Nolak berarti hukuman.', loud:false, tags:['tantangan'], solo:true, run:gameTod},
   {name:'Dadu Nasib', how:'Kocok dadu, angkanya nentuin nasib: aman, tantangan, atau seret orang lain.', loud:false, tags:['tantangan'], solo:true, run:gameDadu},
   {name:'Roda Hukuman', how:'Main game lain? Pakai ini buat ngacak hukuman yang kalah.', loud:false, tags:[], solo:true, run:gameRoda},
-  {name:'Roulette Jari', how:'Semua tempel satu jari. Detak makin cepat, satu jari kena hukuman.', loud:true, tags:['cepat'], solo:true, run:gameRoulette},
-  {name:'Jawab Cepat', how:'Sebutkan 3 hal sesuai prompt dalam 5 detik. Gagal, kena hukuman.', loud:true, tags:['cepat'], solo:true, run:gameCepat},
+  {name:'Roulette Jari', how:'Semua tempel satu jari. Makin lama makin deg-degan, sampai satu jari kena hukuman.', loud:true, tags:['cepat'], solo:true, run:gameRoulette},
+  {name:'Jawab Cepat', how:'Sebut 3 hal sesuai prompt dalam 5 detik. Nge-blank? Kena hukuman.', loud:true, tags:['cepat'], solo:true, run:gameCepat},
   {name:'Kata Terlarang', how:'Jelaskan kata rahasia tanpa menyebut 3 kata terlarang. 30 detik.', loud:true, tags:['tantangan'], solo:true, run:gameTaboo},
   {name:'Cari Penyusup', how:'Satu pemain dapat kata berbeda. Debat, lalu voting siapa penyusupnya.', loud:true, tags:['tantangan'], team:true, min:3, run:gameUndercover},
   {name:'Cari Benda', how:'Cari benda 5 ronde campur: 2 warna discan semua, 2 kata lewat tap tercepat, 1 gabungan.', loud:true, tags:['tantangan'], solo:true, run:gameColorHunt},

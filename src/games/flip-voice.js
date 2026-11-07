@@ -29,7 +29,7 @@ export function gameFlipVoice(){
   const finish=(winner,detail='')=>{
     stopAll(); phase='done';
     if(winner!==null) scores[winner]++;
-    setStage(`<p class="kicker">Ronde ${round+1}/${total}</p><h2 class="big">${winner!==null?`${esc(p[winner])} dapat!`:'Tidak ada yang dapat'}</h2>
+    setStage(`<p class="kicker">Ronde ${round+1}/${total}</p><h2 class="big">${winner!==null?`${esc(p[winner])} dapat!`:'Nggak ada yang dapet poin'}</h2>
       ${detail}<p class="hint">${scoreLine()}</p>`);
     setActions(`<button class="btn ink xl" id="next">${round<total-1?'Ronde berikutnya':'Lihat hasil'}</button>`);
     $('#next').onclick=nextRound;
@@ -45,7 +45,7 @@ export function gameFlipVoice(){
     const ranked=p.map((n,i)=>({n,s:scores[i]})).sort((a,b)=>b.s-a.s);
     setStage(`<p class="kicker">Hasil</p><div class="board" style="width:100%">
       ${ranked.map(({n,s})=>`<div class="${s===min?'top':''}"><span>${esc(n)}</span><b>${s}</b></div>`).join('')}</div>
-      <p class="hint">${max===0?'Tidak ada yang dapat poin. Coba mode lain.':min===max?'Semua seri, tidak ada yang dihukum.':'Poin terendah kena hukuman.'}</p>`);
+      <p class="hint">${max===0?'Nggak ada yang dapet poin. Coba mode lain.':min===max?'Semua seri, aman semua.':'Poin terendah kena hukuman.'}</p>`);
     if(max===0 || min===max){
       setActions(`<button class="btn hot xl" id="again">Main lagi</button>`);
       $('#again').onclick=setup;
@@ -79,16 +79,16 @@ export function gameFlipVoice(){
     $('#playK').onclick=playKata;
   };
   const speakKata=async()=>{
-    const hint=$('#voiceHint'); if(hint) hint.textContent='Memuat suara...';
+    const hint=$('#voiceHint'); if(hint) hint.textContent='Bentar, lagi nyiapin suara...';
     const slug=word.toLowerCase().replace(/[^a-z0-9]+/g,'-');
     try{
       if(!wordBuffers.has(slug)){
         wordBuffers.set(slug, await loadBuffer(`${import.meta.env.BASE_URL}voice/words/${slug}.mp3`));
       }
       if(phase==='done' || !$('#voiceHint')) return;
-      const h=$('#voiceHint'); if(h) h.textContent='Memutar kata...';
+      const h=$('#voiceHint'); if(h) h.textContent='Dengerin baik-baik...';
       await playBuffer(reverseBuffer(wordBuffers.get(slug)), effectParams(roundEffect));
-      const done=$('#voiceHint'); if(done) done.textContent='Sudah diputar. Tap nama pemain yang pertama benar.';
+      const done=$('#voiceHint'); if(done) done.textContent='Udah diputar. Tap nama pemain yang pertama jawab bener.';
     }catch(e){
       showError('Bank suara tidak bisa dimuat. Coba lagi.', ()=>playKata());
     }
