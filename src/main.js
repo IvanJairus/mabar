@@ -1,5 +1,6 @@
-import { $, app, esc, toast, clearGame, S, save, setHomeHandler } from './core/index.js';
+import { $, app, esc, rand, toast, clearGame, S, save, setHomeHandler } from './core/index.js';
 import { GAMES, FILTERS, TAG_LABELS } from './data/games.js';
+import { tutorial } from './tutorial.js';
 
 let filter = 'semua';
 
@@ -12,19 +13,30 @@ function home(){
   app.innerHTML = `<div class="wrap">
     <div class="home-top">
       <a class="btn sm home-back" href="https://www.ivanjairus.xyz/" aria-label="Kembali ke ivanjairus.xyz">← ivanjairus.xyz</a>
+      <button class="btn sm" id="howto">Cara main</button>
     </div>
-    <header class="hero"><h1>Mabar</h1><p>Satu HP, 2–6 orang, oper-operan. Semua game ada hukumannya.</p></header>
+    <header class="hero">
+      <h1>Mabar</h1>
+      <p>Satu HP, 2–6 orang, oper-operan. Semua game ada hukumannya.</p>
+    </header>
 
     <section class="sec" aria-labelledby="hp">
       <h2 id="hp">Pemain <small>${p.length}/6</small></h2>
-      <div class="players">${p.map((n,k)=>`<span class="chip">${esc(n)}<button data-del="${k}" aria-label="Hapus ${esc(n)}">×</button></span>`).join('')}</div>
+      <div class="players">${p.map((n,k)=>{
+        const cnt = S.kena[n]||0;
+        const isTop = maxK > 0 && cnt === maxK;
+        return `<span class="chip${isTop?' top':''}">${esc(n)}${cnt?`<b class="chip-stat" title="Kena hukuman ${cnt}x">${cnt}×</b>`:''}<button data-del="${k}" aria-label="Hapus ${esc(n)}">×</button></span>`;
+      }).join('')}</div>
       ${p.length < 6 ? `<form class="add" id="add"><input id="nm" maxlength="14" placeholder="Nama pemain" autocomplete="off" aria-label="Nama pemain"><button class="btn ink">Tambah</button></form>` : ''}
       <p class="hint">${ok ? 'Urutan nama = urutan duduk searah jarum jam.' : `Tambah ${2-p.length} pemain lagi biar bisa mulai.`}</p>
     </section>
 
     <section class="sec" aria-labelledby="hg">
       <h2 id="hg">Pilih game <small>${list.length} game</small></h2>
-      <div class="filters" role="group" aria-label="Filter game">${Object.entries(FILTERS).map(([k,v])=>`<button data-f="${k}" aria-pressed="${k===filter}">${v}</button>`).join('')}</div>
+      <div class="toolbar">
+        <div class="filters" role="group" aria-label="Filter game">${Object.entries(FILTERS).map(([k,v])=>`<button data-f="${k}" aria-pressed="${k===filter}">${v}</button>`).join('')}</div>
+        <button class="btn sm ink" id="randGame">Acak game</button>
+      </div>
       <ul class="games">${list.map(g => {
         const need = g.min && p.length < g.min;
         return `<li><button class="g" data-g="${GAMES.indexOf(g)}" aria-disabled="${!ok||need}">
@@ -37,10 +49,11 @@ function home(){
     ${p.length ? `<section class="sec" aria-labelledby="hk2">
       <h2 id="hk2">Klasemen hukuman <small><button class="btn sm" id="rst">Reset</button></small></h2>
       <div class="board">${ranked.map(n=>`<div class="${maxK && (S.kena[n]||0)===maxK?'top':''}"><span>${esc(n)}</span><b>${S.kena[n]||0}×</b></div>`).join('')}</div>
-      <p class="hint">${maxK ? 'Merah = paling sering kena.' : 'Belum ada yang kena. Belum.'}</p>
+      <p class="hint">${maxK ? 'Merah = paling sering kena hukuman.' : 'Belum ada yang kena. Belum.'}</p>
     </section>` : ''}
   </div>`;
 
+  $('#howto').onclick = () => { scrollTo(0,0); tutorial(home); };
   $('#add')?.addEventListener('submit', e => {
     e.preventDefault(); const v = $('#nm').value.trim();
     if(!v) return;
@@ -55,6 +68,13 @@ function home(){
     if(g.min && p.length < g.min){ toast(`Game ini butuh minimal ${g.min} pemain.`); return; }
     scrollTo(0,0); g.run();
   });
+  $('#randGame').onclick = () => {
+    if(p.length < 2){ toast('Isi nama pemain dulu ya, minimal 2 orang.'); return; }
+    const avail = list.filter(g => !g.min || p.length >= g.min);
+    if(!avail.length){ toast('Tambah pemain dulu buat filter ini.'); return; }
+    const g = rand(avail);
+    scrollTo(0,0); g.run();
+  };
   $('#rst')?.addEventListener('click', () => { if(confirm('Reset semua hitungan hukuman?')){ S.kena={}; save(); home(); } });
 }
 

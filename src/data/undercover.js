@@ -1,10 +1,14 @@
 export const UNDERCOVER = [
-  ["Kopi","Teh"],["Kucing","Anjing"],["Pantai","Gunung"],["Bakso","Sate"],["Sepeda","Motor"],
-  ["Bulan","Matahari"],["Dokter","Perawat"],["Sekolah","Kantor"],["Hujan","Salju"],["Pisang","Mangga"],
-  ["Buku","Majalah"],["Pesawat","Kapal"],["Gitar","Piano"],["Bola","Kelereng"],["Roti","Kue"],
-  ["Susu","Yogurt"],["Pensil","Pulpen"],["Jalan","Jembatan"],["Api","Lilin"],["Es","Uap"],
-  ["Kuda","Sapi"],["Ayam","Bebek"],["Bawang","Cabai"],["Nasi","Bubur"],["Kacamata","Lensa"],
-  ["Sapu","Pel"],["Kursi","Sofa"],["Kasur","Bantal"],["Piring","Mangkok"],["Sendok","Garpu"],
-  ["Jus","Sirup"],["Becak","Bajaj"],["Kereta","Bus"],["Hutan","Kebun"],["Bukit","Lembah"],
-  ["Sungai","Danau"],["Kota","Desa"],["Mall","Pasar"],["Bioskop","Teater"],["Museum","Galeri"]
+  ["Kopi Susu","Matcha Latte"],["TikTok","Instagram Reels"],["Gebetan","HTS"],["Spotify","YouTube Music"],
+  ["Ojol","Taksi Online"],["WFC di Kafe","Kerja di Kantor"],["Second Account","Close Friend"],["Thrift Shop","Mall"],
+  ["Seblak","Mie Pedas"],["Nasi Padang","Warteg"],["Indomie Goreng","Indomie Kuah"],["Martabak Manis","Martabak Telur"],
+  ["Ayam Geprek","Pecel Lele"],["Boba","Es Teh"],["Bioskop","Netflix"],["Konser Musik","Festival Kuliner"],
+  ["Staycation","Camping"],["Pantai","Gunung"],["Kucing","Anjing"],["Bakso","Mie Ayam"],
+  ["Sepeda","Motor Matic"],["Kereta KRL","Transjakarta"],["Pesawat","Kapal Laut"],["Gitar","Ukulele"],
+  ["TWS / Earphone","Headphone"],["Laptop","iPad / Tablet"],["Powerbank","Charger"],["Kacamata Hitam","Kacamata Minus"],
+  ["Hoodie","Sweater"],["Sneakers","Sandal Gunung"],["Tote Bag","Ransel"],["Kasur","Sofa"],
+  ["Kipas Angin","AC"],["Kulkas","Dispenser"],["Gym","Lari Pagi"],["Karaoke","Nonton Live"],
+  ["Chat WA","Voice Note"],["Video Call","Telepon Biasa"],["Ghosting","Slow Respon"],["Cindo","Anak Jaksel"],
+  ["Gaji UMR","Lifestyle Jaksel"],["Pinjam Dulu Seratus","Split Bill"],["Nonton Bioskop","Netflix and Chill"],
+  ["Kencan Pertama","Blind Date"],["Matcha Latte","Jus Alpukat"],["Silent Reader","Spam Chat"]
 ];

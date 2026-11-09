@@ -7,6 +7,8 @@ import { KATEGORI } from '../data/kategori.js';
 import { CEPAT } from '../data/cepat.js';
 import { TABOO } from '../data/taboo.js';
 import { UNDERCOVER } from '../data/undercover.js';
+import { SAMBUNG } from '../data/sambung.js';
+import { GAMBAR } from '../data/gambar.js';
 
 export const drawHukuman = Object.fromEntries(Object.entries(HUKUMAN).map(([k, list]) => [k, deck(list)]));
 export const drawTantangan = deck(TANTANGAN);
@@ -17,3 +19,5 @@ export const drawCepat = deck(CEPAT);
 export const drawTaboo = deck(TABOO);
 export const drawUndercover = deck(UNDERCOVER);
 export const drawBuzzerKategori = deck(KATEGORI);
+export const drawSambung = deck(SAMBUNG);
+export const drawGambar = deck(GAMBAR);

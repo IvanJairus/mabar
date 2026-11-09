@@ -34,12 +34,14 @@ export function gameTaboo(){
       <div class="card"><div class="taboo-label">Jelaskan tanpa menyebut</div>
         <div class="taboo-word">${esc(card.w)}</div>
         <div class="taboo-no">${card.no.map(w=>`<span>${esc(w)}</span>`).join('')}</div></div>
-      <p class="hint">Polisi sensor: <b>${esc(p[(i+1)%p.length])}</b> · <span id="clock">30</span> detik</p>`);
-    setActions(`<div class="row"><button class="btn ink" id="ok">Tebak!</button><button class="btn hot" id="no">Keceplosan</button></div>`);
+      <p class="hint">Polisi sensor: <b>${esc(p[(i+1)%p.length])}</b></p>
+      <div class="who" id="clock">30</div>`);
+    setActions(`<div class="row"><button class="btn ink" id="ok">Ketebak!</button><button class="btn hot" id="no">Keceplosan</button></div>`);
     beep(900,.2);
     const tick=()=>{
       if(!active || done) return;
-      left--; const el=$('#clock'); if(el) el.textContent=left;
+      left--; const el=$('#clock');
+      if(el){ el.textContent=left; el.classList.toggle('urgent', left<=5); }
       if(left>0){ if(left<=5) beep(1200,.05); timer=later(tick,1000); }
       else judge();
     };

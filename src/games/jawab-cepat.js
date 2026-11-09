@@ -1,4 +1,4 @@
-import { $, S, esc, rand, shuffle, deck, later, wait, clearGame, shell, setStage, setActions, countdown, beep, buzz, boom, showHukuman, twoTeams, teamIntro, drawKategori, drawTantangan, drawJujur, drawSiapa, drawCepat, drawTaboo, drawUndercover, drawBuzzerKategori } from '../core/index.js';
+import { $, S, esc, later, shell, setStage, setActions, beep, showHukuman, drawCepat } from '../core/index.js';
 /* ---------- 9. Jawab Cepat ---------- */
 export function gameCepat(){
   const p=S.players;
@@ -18,8 +18,8 @@ export function gameCepat(){
   const judge=()=>{
     if(done) return; active=false; clearTimeout(timer); beep(300,.18);
     setStage(`<p class="kicker">Waktu habis</p><div class="card"><div class="txt">${esc(prompt)}</div></div>
-      <h2 class="big">Jawaban benar?</h2>
-      <p>Hakim memutuskan sekarang.</p>`);
+      <h2 class="big">Jawaban sah?</h2>
+      <p>Teman-teman putuskan sekarang.</p>`);
     setActions(`<div class="row"><button class="btn ink" id="ok">Benar</button><button class="btn hot" id="no">Gagal</button></div>`);
     $('#ok').onclick=success;
     $('#no').onclick=()=>fail('Waktu habis');
@@ -32,7 +32,8 @@ export function gameCepat(){
     beep(700,.08);
     const tick=()=>{
       if(!active || done) return;
-      left--; const el=$('#clock'); if(el) el.textContent=left;
+      left--; const el=$('#clock');
+      if(el){ el.textContent=left; el.classList.toggle('urgent', left<=2); }
       if(left>0){ if(left<=2) beep(1200,.06); timer=later(tick,1000); }
       else judge();
     };

@@ -1,14 +1,14 @@
 # Mabar
 
-**16 game pesta untuk 2–6 orang di satu HP.**
+**19 game pesta untuk 2–6 orang di satu HP.**
 
-A 16-game party app for 2–6 players on one phone.
+A 19-game party app for 2–6 players on one phone.
 
 Live: **https://www.ivanjairus.xyz/mabar/**
 
 ## Isi
 
-- 16 game: Bom Waktu, Tekan Duluan, Tebak Gaya, Siapa Paling...?, Jujur atau Berani, Dadu Nasib, Roda Hukuman, Roulette Jari, Jawab Cepat, Kata Terlarang, Cari Penyusup, Cari Benda, Flip My Voice, Adu Bel, Stop the Timer, dan Kode Rahasia.
+- 19 game: Bom Waktu, Tekan Duluan, Tebak Gaya, Siapa Paling...?, Jujur atau Berani, Dadu Nasib, Roda Hukuman, Roulette Jari, Jawab Cepat, Kata Terlarang, Cari Penyusup, Cari Benda, Flip My Voice, Adu Bel, Stop the Timer, Kode Rahasia, Sambung Kata, Hitung Bareng, dan Gambar Buta.
 - 1.451 kartu bank utama, plus 32 kartu warna dan prompt dinamis untuk Cari Benda.
 - Filter Solo dan Team. Beberapa game punya mode lokal, tim, atau free-for-all.
 - Hukuman per game, bukan satu dek global, supaya tempo tiap game tetap pas.
